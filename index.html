@@ -6,6 +6,14 @@
 <title>THE-SYSTEM-PROMPT — the operating contract for every coding agent</title>
 <meta name="description" content="One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from explore to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
 <meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="THE-SYSTEM-PROMPT — the operating contract for every coding agent">
+<meta property="og:description" content="One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from explore to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
+<meta property="og:url" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
+<meta property="og:image" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" hreflang="en" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
 <link rel="alternate" hreflang="ko" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2315171c'/><path d='M10 7v18M16 7v18' stroke='%23fbfaf7' stroke-width='2'/><path d='M7 16h18' stroke='%23c0392b' stroke-width='2'/></svg>">
@@ -15,12 +23,12 @@
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol><symbol id="chev" viewBox="0 0 12 12"><path d="M3 4.5 6 7.5l3-3"/></symbol></svg>
 
 <header class="sheet">
-  <nav class="lang"><a href="index.html" aria-current="page">EN</a><a href="ko.html">한국어</a></nav>
+  <nav class="lang"><a href="index.html" aria-current="page">EN</a><a href="ko.html">한국어</a><button type="button" class="theme" hidden data-labels="Dark|Light">Dark</button></nav>
   <h1>THE-<span>SYSTEM</span>-PROMPT</h1>
   <div class="grid masthead">
     <p class="meta">
       <span>AGENTS.md</span>
-      <span>3,114 bytes</span>
+      <span>3,119 bytes</span>
       <span>7 steps</span>
       <span>5 agent paths</span>
     </p>
@@ -53,7 +61,7 @@
   <p class="lead">Explore to report. Step four is the only place the agent stops for a human.</p>
   <p class="illus">Open a step to watch it on a made-up bug: password-reset links that come back as “Invalid token”. The exchanges are illustrative, not transcripts.</p>
   <ol class="loop anim">
-    <li class="step" data-step="1" data-name="Explore"><span class="n">1</span>
+    <li class="step" id="step-1" data-step="1" data-name="Explore"><span class="n">1</span>
       <h3>Explore</h3>
       <p>Read the repository instructions, domain model, and real data shapes; tests verify that model, they do not define it. Then read the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p>
       <details class="xd" name="loop">
@@ -63,7 +71,7 @@
         </ol>
       </details>
     </li>
-    <li class="step" data-step="2" data-name="Intent"><span class="n">2</span>
+    <li class="step" id="step-2" data-step="2" data-name="Intent"><span class="n">2</span>
       <h3>Intent</h3>
       <p>Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p>
       <details class="xd" name="loop">
@@ -74,7 +82,7 @@
         </ol>
       </details>
     </li>
-    <li class="step" data-step="3" data-name="Options"><span class="n">3</span>
+    <li class="step" id="step-3" data-step="3" data-name="Options"><span class="n">3</span>
       <h3>Options</h3>
       <p>Give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one.</p>
       <details class="xd" name="loop">
@@ -85,7 +93,7 @@
         </ol>
       </details>
     </li>
-    <li class="step gate" data-step="4" data-name="Plan"><span class="n">4</span>
+    <li class="step gate" id="step-4" data-step="4" data-name="Plan"><span class="n">4</span>
       <h3>Plan</h3>
       <p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p>
       <details class="xd" name="loop">
@@ -98,7 +106,7 @@
       <p class="mark">Last human gate</p>
     </li>
     <li class="after divider" aria-hidden="true"><p class="unattended">unattended from here</p></li>
-    <li class="step after" data-step="5" data-name="Execute"><span class="n">5</span>
+    <li class="step after" id="step-5" data-step="5" data-name="Execute"><span class="n">5</span>
       <h3>Execute</h3>
       <p>Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.</p>
       <details class="xd locked" name="loop" aria-disabled="true">
@@ -108,7 +116,7 @@
         </ol>
       </details>
     </li>
-    <li class="step after" data-step="6" data-name="Evidence"><span class="n">6</span>
+    <li class="step after" id="step-6" data-step="6" data-name="Evidence"><span class="n">6</span>
       <h3>Evidence</h3>
       <p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p>
       <details class="xd locked" name="loop" aria-disabled="true">
@@ -118,7 +126,7 @@
         </ol>
       </details>
     </li>
-    <li class="step after" data-step="7" data-name="Report"><span class="n">7</span>
+    <li class="step after" id="step-7" data-step="7" data-name="Report"><span class="n">7</span>
       <h3>Report</h3>
       <p>Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p>
       <details class="xd locked" name="loop" aria-disabled="true">
@@ -136,6 +144,20 @@
   <h2>Install</h2>
   <div>
   <p class="lead">Keep one canonical copy and link it into each agent's config directory.</p>
+  <form class="cfg" hidden>
+    <fieldset><legend>Agents you use</legend>
+      <label><input type="checkbox" name="agent" value="claude" checked> Claude Code</label>
+      <label><input type="checkbox" name="agent" value="codex" checked> Codex CLI</label>
+      <label><input type="checkbox" name="agent" value="gemini" checked> Gemini CLI</label>
+      <label><input type="checkbox" name="agent" value="opencode" checked> OpenCode</label>
+      <label><input type="checkbox" name="agent" value="pi" checked> pi</label>
+      <label><input type="checkbox" name="agent" value="repo"> Per-repo (Cursor, Windsurf, Antigravity)</label>
+    </fieldset>
+    <fieldset><legend>Shell</legend>
+      <label><input type="radio" name="shell" value="unix" checked> macOS / Linux</label>
+      <label><input type="radio" name="shell" value="win"> Windows PowerShell</label>
+    </fieldset>
+  </form>
   <pre id="install-block"><code>mkdir -p ~/.agents
 curl -fsSL <span class="u">https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md</span> \
   -o ~/.agents/AGENTS.md
@@ -149,6 +171,12 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
     <button type="button" class="btn" data-copy="install-block">Copy the install block</button>
   </div>
   <span class="status" role="status" aria-live="polite"></span>
+  <div class="verify" hidden>
+    <p class="k">Then confirm every link resolves</p>
+    <pre id="verify-block"><code></code></pre>
+    <div class="acts"><button type="button" class="btn" data-copy="verify-block">Copy the check</button></div>
+    <span class="status" role="status" aria-live="polite"></span>
+  </div>
   <table>
     <caption>Where each agent reads it</caption>
     <thead><tr><th scope="col">Agent</th><th scope="col">Path it loads</th></tr></thead>
@@ -204,7 +232,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 **7. Report.** Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
-<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};window.WALK={"prog":"Step {n} of 7 · {name}","waiting":"waiting for your approval","approved":"Plan approved. Steps 5 to 7 run unattended.","hint":"Approve the plan first.","see":"Watch this step","locked":"Waits for approval"};</script>
+<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};window.WALK={"prog":"Step {n} of 7 · {name}","waiting":"waiting for your approval","approved":"Plan approved. Steps 5 to 7 run unattended.","hint":"Approve the plan first.","see":"Watch this step","locked":"Waits for approval"};window.CFG={"gemini":"# Gemini CLI reads GEMINI.md","wincopy":"# Windows: copy instead of link; rerun after each update"};</script>
 <script src="app.js"></script>
 </body>
 </html>

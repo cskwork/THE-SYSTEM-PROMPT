@@ -58,3 +58,8 @@ Each step on the page opens onto a made-up bug (reset links rejected as "Invalid
 followed through the whole loop. Steps 5 to 7 stay locked until you press *Approve the plan*
 at step 4, which is the point of the contract. The exchanges live in `build.py` under `XC`
 and are illustrative, not transcripts.
+
+The install section is a small configurator: tick the agents you use, pick macOS/Linux or
+Windows PowerShell, and copy the generated block plus a check that every link resolves.
+`.github/workflows/check.yml` rebuilds on every push and fails if `index.html` or `ko.html`
+were not regenerated after `AGENTS.md` changed.

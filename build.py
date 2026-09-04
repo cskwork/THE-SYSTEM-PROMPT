@@ -10,6 +10,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).parent
 AGENTS = (ROOT / "AGENTS.md").read_text()
+BYTES = f"{len(AGENTS.encode()):,} bytes"
 
 GATE = 4  # Plan: the only step that stops for a human
 REPO = "https://github.com/cskwork/THE-SYSTEM-PROMPT"
@@ -34,7 +35,7 @@ EN = {
   "title": "THE-SYSTEM-PROMPT — the operating contract for every coding agent",
   "desc": "One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from explore to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.",
   "lede": 'The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and a seven-step loop from explore to report.',
-  "meta": ["AGENTS.md", "3,114 bytes", "7 steps", "5 agent paths"],
+  "meta": ["AGENTS.md", BYTES, "7 steps", "5 agent paths"],
   "copy": "Copy the contract", "repo": "Repository", "raw": "Raw file",
   "s1": "The preamble",
   "s1lead": "Three rules that hold for the whole session, before the loop starts. Every line below is the file itself.",
@@ -77,7 +78,7 @@ KO = dict(EN, **{
   "title": "THE-SYSTEM-PROMPT — 모든 코딩 에이전트가 읽는 운영 계약",
   "desc": "파일 하나, AGENTS.md. 태도와 증거 규칙, 그리고 explore에서 report까지 이어지는 7단계 루프가 들어 있다. Claude Code·Codex CLI·Gemini CLI·OpenCode·pi에 심링크로 걸어 쓴다.",
   "lede": '내가 쓰는 모든 코딩 에이전트에 똑같이 걸어 두는 운영 계약. <b>파일 하나, <code>AGENTS.md</code></b>에 태도와 증거 규칙, explore에서 report까지의 7단계 루프가 들어 있다.',
-  "meta": ["AGENTS.md", "3,114 bytes", "7단계", "에이전트 경로 5개"],
+  "meta": ["AGENTS.md", BYTES, "7단계", "에이전트 경로 5개"],
   "copy": "계약 전문 복사", "repo": "저장소", "raw": "원문 파일",
   "s1": "서두",
   "s1lead": "루프가 시작되기 전, 세션 내내 걸려 있는 세 가지 규칙이다. 아래는 한국어 설명이고, 복사 버튼으로 받는 원문은 영어 파일 그대로다.",
@@ -122,12 +123,18 @@ UI = {
          "see": "Watch this step", "locked": "Waits for approval", "approve": "Approve the plan",
          "approved": "Plan approved. Steps 5 to 7 run unattended.", "reset": "Start over",
          "you": "you", "agent": "agent", "prog": "Step {n} of 7 · {name}", "waiting": "waiting for your approval",
-         "hint": "Approve the plan first."},
+         "hint": "Approve the plan first.",
+         "theme": ["Dark", "Light"], "agents": "Agents you use", "shell": "Shell",
+         "unix": "macOS / Linux", "win": "Windows PowerShell", "perrepo": "Per-repo (Cursor, Windsurf, Antigravity)",
+         "verify": "Then confirm every link resolves", "copyverify": "Copy the check", "wincopy": "# Windows: copy instead of link; rerun after each update"},
   "ko": {"illus": "단계를 열면 가상의 버그 하나를 끝까지 따라갑니다. 비밀번호 재설정 링크가 “Invalid token”으로 튕기는 문제입니다. 대화는 예시이지 실제 기록이 아닙니다.",
          "see": "이 단계 보기", "locked": "승인을 기다린다", "approve": "계획 승인",
          "approved": "계획이 승인됐다. 5~7단계는 사람 없이 진행된다.", "reset": "처음부터",
          "you": "나", "agent": "에이전트", "prog": "7단계 중 {n} · {name}", "waiting": "승인 대기 중",
-         "hint": "먼저 계획을 승인해야 한다."},
+         "hint": "먼저 계획을 승인해야 한다.",
+         "theme": ["다크", "라이트"], "agents": "쓰는 에이전트", "shell": "셸",
+         "unix": "macOS / Linux", "win": "Windows PowerShell", "perrepo": "레포별 (Cursor, Windsurf, Antigravity)",
+         "verify": "그다음 링크가 전부 풀리는지 확인", "copyverify": "확인 명령 복사", "wincopy": "# Windows: 링크 대신 복사. 업데이트 때마다 다시 실행"},
 }
 
 XC = {
@@ -171,7 +178,7 @@ def loop_markup(t):
         summary = ui["locked"] if locked else ui["see"]
         approve = '\n        <button type="button" class="btn approve">%s</button>' % ui["approve"] if i == GATE else ""
         mark = '\n      <p class="mark">%s</p>' % t["gate"] if i == GATE else ""
-        out.append('''    <li class="%s" data-step="%d" data-name="%s"><span class="n">%d</span>
+        out.append('''    <li class="%s" id="step-%d" data-step="%d" data-name="%s"><span class="n">%d</span>
       <h3>%s</h3>
       <p>%s</p>
       <details class="%s" name="loop"%s>
@@ -180,7 +187,7 @@ def loop_markup(t):
 %s
         </ol>%s
       </details>%s
-    </li>''' % (cls, i, plain, i, name, body, dcls, dis, summary, lines, approve, mark))
+    </li>''' % (cls, i, i, plain, i, name, body, dcls, dis, summary, lines, approve, mark))
         if i == GATE:
             out.append('    <li class="after divider" aria-hidden="true"><p class="unattended">%s</p></li>' % t["unattended"])
     return "\n".join(out)
@@ -204,6 +211,14 @@ def page(t):
 <title>{t["title"]}</title>
 <meta name="description" content="{t["desc"]}">
 <meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{t["title"]}">
+<meta property="og:description" content="{t["desc"]}">
+<meta property="og:url" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/{"" if t["lang"] == "en" else t["file"]}">
+<meta property="og:image" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" hreflang="en" href="{REPO.replace("https://github.com/cskwork", "https://cskwork.github.io")}/">
 <link rel="alternate" hreflang="ko" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2315171c'/><path d='M10 7v18M16 7v18' stroke='%23fbfaf7' stroke-width='2'/><path d='M7 16h18' stroke='%23c0392b' stroke-width='2'/></svg>">
@@ -213,7 +228,7 @@ def page(t):
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol><symbol id="chev" viewBox="0 0 12 12"><path d="M3 4.5 6 7.5l3-3"/></symbol></svg>
 
 <header class="sheet">
-  <nav class="lang"><a href="{t["file"]}" aria-current="page">{t["self"]}</a><a href="{other_href}">{other_label}</a></nav>
+  <nav class="lang"><a href="{t["file"]}" aria-current="page">{t["self"]}</a><a href="{other_href}">{other_label}</a><button type="button" class="theme" hidden data-labels="{ui["theme"][0]}|{ui["theme"][1]}">{ui["theme"][0]}</button></nav>
   <h1>THE-<span>SYSTEM</span>-PROMPT</h1>
   <div class="grid masthead">
     <p class="meta">
@@ -255,11 +270,31 @@ def page(t):
   <h2>{t["s3"]}</h2>
   <div>
   <p class="lead">{t["s3lead"]}</p>
+  <form class="cfg" hidden>
+    <fieldset><legend>{ui["agents"]}</legend>
+      <label><input type="checkbox" name="agent" value="claude" checked> Claude Code</label>
+      <label><input type="checkbox" name="agent" value="codex" checked> Codex CLI</label>
+      <label><input type="checkbox" name="agent" value="gemini" checked> Gemini CLI</label>
+      <label><input type="checkbox" name="agent" value="opencode" checked> OpenCode</label>
+      <label><input type="checkbox" name="agent" value="pi" checked> pi</label>
+      <label><input type="checkbox" name="agent" value="repo"> {ui["perrepo"]}</label>
+    </fieldset>
+    <fieldset><legend>{ui["shell"]}</legend>
+      <label><input type="radio" name="shell" value="unix" checked> {ui["unix"]}</label>
+      <label><input type="radio" name="shell" value="win"> {ui["win"]}</label>
+    </fieldset>
+  </form>
   <pre id="install-block"><code>{INSTALL.format(gemini=t["gemini"])}</code></pre>
   <div class="acts">
     <button type="button" class="btn" data-copy="install-block">{t["copyinstall"]}</button>
   </div>
   <span class="status" role="status" aria-live="polite"></span>
+  <div class="verify" hidden>
+    <p class="k">{ui["verify"]}</p>
+    <pre id="verify-block"><code></code></pre>
+    <div class="acts"><button type="button" class="btn" data-copy="verify-block">{ui["copyverify"]}</button></div>
+    <span class="status" role="status" aria-live="polite"></span>
+  </div>
   <table>
     <caption>{t["caption"]}</caption>
     <thead><tr><th scope="col">{t["th"][0]}</th><th scope="col">{t["th"][1]}</th></tr></thead>
@@ -288,7 +323,7 @@ def page(t):
 </div></footer>
 
 <script id="agents-md" type="text/plain">{AGENTS}</script>
-<script>window.COPY_MSG={{"agents-md":"{t["statusmsg"][0]}","install-block":"{t["statusmsg"][1]}"}};window.WALK={{"prog":"{ui["prog"]}","waiting":"{ui["waiting"]}","approved":"{ui["approved"]}","hint":"{ui["hint"]}","see":"{ui["see"]}","locked":"{ui["locked"]}"}};</script>
+<script>window.COPY_MSG={{"agents-md":"{t["statusmsg"][0]}","install-block":"{t["statusmsg"][1]}"}};window.WALK={{"prog":"{ui["prog"]}","waiting":"{ui["waiting"]}","approved":"{ui["approved"]}","hint":"{ui["hint"]}","see":"{ui["see"]}","locked":"{ui["locked"]}"}};window.CFG={{"gemini":"{t["gemini"]}","wincopy":"{ui["wincopy"]}"}};</script>
 <script src="app.js"></script>
 </body>
 </html>

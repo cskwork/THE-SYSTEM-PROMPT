@@ -148,3 +148,81 @@
   });
   window.WALK.locked = T.locked;
 })();
+
+(function () {
+  // theme: explicit choice wins, system preference otherwise
+  var btn = document.querySelector('.theme'); if (!btn) return;
+  var labels = btn.dataset.labels.split('|'), root = document.documentElement;
+  function effective() { return root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
+  function paint() { btn.textContent = effective() === 'dark' ? labels[1] : labels[0]; root.style.colorScheme = effective(); }
+  try { var saved = localStorage.getItem('theme'); if (saved) root.dataset.theme = saved; } catch (e) {}
+  btn.hidden = false; paint();
+  btn.addEventListener('click', function () {
+    root.dataset.theme = effective() === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+    paint();
+  });
+})();
+
+(function () {
+  // deep links: #step-3 opens the step; opening a step writes the hash
+  var loop = document.querySelector('.loop'); if (!loop) return;
+  function fromHash() {
+    var m = /^#step-(\d)$/.exec(location.hash); if (!m) return;
+    var li = document.getElementById('step-' + m[1]); if (!li) return;
+    var d = li.querySelector('.xd');
+    if (d.classList.contains('locked')) { li = document.getElementById('step-4'); d = li.querySelector('.xd'); }
+    d.open = true;
+    setTimeout(function () { li.scrollIntoView({ block: 'start' }); window.scrollBy(0, -24); }, 30);
+  }
+  loop.addEventListener('toggle', function (e) {
+    var d = e.target; if (!d.classList.contains('xd') || !d.open) return;
+    var id = d.closest('.step').id;
+    if (history.replaceState) history.replaceState(null, '', '#' + id);
+  }, true);
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+
+(function () {
+  // install configurator: the static block is the no-JS baseline and the default output
+  var form = document.querySelector('.cfg'), out = document.querySelector('#install-block code');
+  var vwrap = document.querySelector('.verify'), vout = document.querySelector('#verify-block code');
+  var C = window.CFG; if (!form || !out || !C) return;
+  var RAW = 'https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md';
+  var P = { claude: ['~/.claude/CLAUDE.md', '$HOME\\.claude\\CLAUDE.md'],
+            codex: ['~/.codex/AGENTS.md', '$HOME\\.codex\\AGENTS.md'],
+            gemini: ['~/.gemini/GEMINI.md', '$HOME\\.gemini\\GEMINI.md'],
+            opencode: ['~/.config/opencode/AGENTS.md', '$HOME\\.config\\opencode\\AGENTS.md'],
+            pi: ['~/.pi/agent/AGENTS.md', '$HOME\\.pi\\agent\\AGENTS.md'],
+            repo: ['/path/to/your/repo/AGENTS.md', 'C:\\path\\to\\your\\repo\\AGENTS.md'] };
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function render() {
+    var agents = [].map.call(form.querySelectorAll('input[name=agent]:checked'), function (i) { return i.value; });
+    var win = form.querySelector('input[name=shell]:checked').value === 'win';
+    var lines = [], check = [];
+    if (win) {
+      lines.push('New-Item -ItemType Directory -Force "$HOME\\.agents" | Out-Null');
+      lines.push('Invoke-WebRequest <span class="u">' + RAW + '</span> -OutFile "$HOME\\.agents\\AGENTS.md"', '', '<span class="c">' + esc(C.wincopy) + '</span>');
+      agents.forEach(function (a) {
+        lines.push('Copy-Item "$HOME\\.agents\\AGENTS.md" "' + P[a][1] + '" -Force' + (a === 'gemini' ? '   <span class="c">' + esc(C.gemini) + '</span>' : ''));
+        check.push('Get-FileHash "' + P[a][1] + '" | Select-Object -ExpandProperty Hash');
+      });
+      check.unshift('Get-FileHash "$HOME\\.agents\\AGENTS.md" | Select-Object -ExpandProperty Hash   <span class="c"># every line below must match this one</span>');
+    } else {
+      lines.push('mkdir -p ~/.agents', 'curl -fsSL <span class="u">' + RAW + '</span> \\', '  -o ~/.agents/AGENTS.md', '');
+      agents.forEach(function (a) {
+        var pad = a === 'gemini' ? '            <span class="c">' + esc(C.gemini) + '</span>' : '';
+        lines.push('ln -sfn ~/.agents/AGENTS.md ' + P[a][0] + pad);
+        check.push('readlink ' + P[a][0]);
+      });
+      check.push('<span class="c"># each line prints ' + esc('/Users/you/.agents/AGENTS.md') + ' or the equivalent home path</span>');
+    }
+    out.innerHTML = lines.join('\n');
+    vout.innerHTML = check.join('\n');
+    vwrap.hidden = agents.length === 0;
+  }
+  form.hidden = false;
+  form.addEventListener('change', render);
+  render();
+})();
