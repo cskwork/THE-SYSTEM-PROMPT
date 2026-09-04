@@ -32,9 +32,8 @@ Developer Mode or an admin terminal; copy the file instead and expect it to drif
 ## What it expects to find
 
 - `~/.agents/rules/rules.md` — your domain rules. The prompt reads it every session.
-- Skills named in the text: `unslop`, `brainstorming`, `writing-plans`. Drop the mention
-  if you do not have them.
-- `CONTEXT.md`, a glossary, or ADRs in the repository, when they exist.
+- Nothing else. The text names no skills, and it does not require a `CONTEXT.md`, a
+  glossary, or ADRs — step one reads whatever repository instructions already exist.
 
 ## Where it is mirrored
 
