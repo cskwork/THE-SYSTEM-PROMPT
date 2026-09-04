@@ -1,0 +1,10 @@
+name: pages match the contract
+on: [push, pull_request]
+jobs:
+  build-is-current:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 build.py
+      - name: fail if index.html or ko.html were not rebuilt after AGENTS.md changed
+        run: git diff --exit-code -- index.html ko.html
