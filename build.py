@@ -11,6 +11,7 @@ import pathlib
 ROOT = pathlib.Path(__file__).parent
 AGENTS = (ROOT / "AGENTS.md").read_text()
 
+GATE = 5  # Plan: the only step that stops for a human
 REPO = "https://github.com/cskwork/THE-SYSTEM-PROMPT"
 RAW = "https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md"
 
@@ -31,9 +32,9 @@ PATHS = [("Claude Code", "~/.claude/CLAUDE.md"), ("Codex CLI", "~/.codex/AGENTS.
 EN = {
   "lang": "en", "file": "index.html", "other": ("ko.html", "한국어"), "self": "EN",
   "title": "THE-SYSTEM-PROMPT — the operating contract for every coding agent",
-  "desc": "One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from orient to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.",
-  "lede": 'The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and a seven-step loop from orient to report.',
-  "meta": ["AGENTS.md", "2,861 bytes", "7 steps", "5 agent paths"],
+  "desc": "One file, AGENTS.md: a stance, an evidence rule, and an eight-step loop from orient to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.",
+  "lede": 'The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and an eight-step loop from orient to report.',
+  "meta": ["AGENTS.md", "3,286 bytes", "8 steps", "5 agent paths"],
   "copy": "Copy the contract", "repo": "Repository", "raw": "Raw file",
   "s1": "The preamble",
   "s1lead": "Four rules that hold for the whole session, before the loop starts. Every line below is the file itself.",
@@ -43,13 +44,14 @@ EN = {
     ("Domain rules", "Always read <code>~/.agents/rules/rules.md</code>."),
     ("Writing", "Apply the <code>unslop</code> skill to every piece of prose: reports, commit messages, comments, docs."),
   ],
-  "s2": "The seven-step loop",
-  "s2lead": "Orient to report. Step four is the only place the agent stops for a human.",
+  "s2": "The eight-step loop",
+  "s2lead": "Orient to report. Step five is the only place the agent stops for a human.",
   "steps": [
     ("Orient", "Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands."),
-    ("Options", "Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one."),
+    ("Intent", "Before options or code, restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing."),
+    ("Options", "Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one."),
     ("Delegate", "Send narrow tasks to fresh-context subagents. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit."),
-    ("Plan", 'State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). If intent is unclear, use <code>brainstorming</code>: one question at a time until ~95% confident. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.'),
+    ("Plan", 'State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.'),
     ("Execute", "Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it."),
     ("Verify", "Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits."),
     ("Report", "Simplified Technical English: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists."),
@@ -75,9 +77,9 @@ EN = {
 KO = dict(EN, **{
   "lang": "ko", "file": "ko.html", "other": ("index.html", "EN"), "self": "한국어",
   "title": "THE-SYSTEM-PROMPT — 모든 코딩 에이전트가 읽는 운영 계약",
-  "desc": "파일 하나, AGENTS.md. 태도와 증거 규칙, 그리고 orient에서 report까지 이어지는 7단계 루프가 들어 있다. Claude Code·Codex CLI·Gemini CLI·OpenCode·pi에 심링크로 걸어 쓴다.",
-  "lede": '내가 쓰는 모든 코딩 에이전트에 똑같이 걸어 두는 운영 계약. <b>파일 하나, <code>AGENTS.md</code></b>에 태도와 증거 규칙, orient에서 report까지의 7단계 루프가 들어 있다.',
-  "meta": ["AGENTS.md", "2,861 bytes", "7단계", "에이전트 경로 5개"],
+  "desc": "파일 하나, AGENTS.md. 태도와 증거 규칙, 그리고 orient에서 report까지 이어지는 8단계 루프가 들어 있다. Claude Code·Codex CLI·Gemini CLI·OpenCode·pi에 심링크로 걸어 쓴다.",
+  "lede": '내가 쓰는 모든 코딩 에이전트에 똑같이 걸어 두는 운영 계약. <b>파일 하나, <code>AGENTS.md</code></b>에 태도와 증거 규칙, orient에서 report까지의 8단계 루프가 들어 있다.',
+  "meta": ["AGENTS.md", "3,286 bytes", "8단계", "에이전트 경로 5개"],
   "copy": "계약 전문 복사", "repo": "저장소", "raw": "원문 파일",
   "s1": "서두",
   "s1lead": "루프가 시작되기 전, 세션 내내 걸려 있는 네 가지 규칙이다. 아래는 한국어 설명이고, 복사 버튼으로 받는 원문은 영어 파일 그대로다.",
@@ -87,13 +89,14 @@ KO = dict(EN, **{
     ("도메인 규칙", "언제나 <code>~/.agents/rules/rules.md</code>를 읽는다."),
     ("글쓰기", "보고서와 커밋 메시지, 주석, 문서까지 모든 글에 <code>unslop</code> 스킬을 적용한다."),
   ],
-  "s2": "7단계 루프",
-  "s2lead": "orient에서 report까지 이어진다. 에이전트가 사람을 기다리는 곳은 4단계 하나뿐이다.",
+  "s2": "8단계 루프",
+  "s2lead": "orient에서 report까지 이어진다. 에이전트가 사람을 기다리는 곳은 5단계 하나뿐이다.",
   "steps": [
     ("Orient <span class=\"gl\">파악</span>", "저장소 지침과 도메인 모델, 실제 데이터 형태를 먼저 읽는다. 그다음 관련 테스트와 계약, 가장 비슷한 코드를 읽는다. 진입점과 호출자, 부수 효과, 그리고 실제로 돌아가는 검증 명령까지 짚어 둔다."),
-    ("Options <span class=\"gl\">선택지</span>", "계획이나 코드를 내놓기 전에, 전략이 서로 다른 세 가지 접근을 한 줄씩 제시한다. 한 줄에 접근과 핵심 트레이드오프, 비용이나 위험을 담는다. 순위를 매기고 1순위를 고른 이유를 하나만 붙인 다음, 거기서 멈춰 선택을 기다린다. 합리적인 접근이 하나뿐일 때만 건너뛴다."),
+    ("Intent <span class=\"gl\">의도</span>", "선택지를 내놓기 전에, 내가 원하는 것을 한 문장으로 다시 말한다. 누가 그 문제를 겪는지, 무엇이 관찰 가능한 완료 조건인지까지 담는다. 내가 해결책부터 꺼냈다면 그 해결책이 푸는 문제가 무엇인지 되묻는다. <code>brainstorming</code>으로 한 번에 하나씩, 다섯 개를 넘기지 않고 묻는다. 주장마다 <code>verified: 방법</code> 또는 <code>assumed: 이유</code>를 붙인다. 내가 한 말도 예외가 아니다. 다섯 번을 물어도 흐릿하면 결정된 것과 열린 것을 나눠 적고, 짐작하는 대신 맨 위 열린 항목부터 푼다."),
+    ("Options <span class=\"gl\">선택지</span>", "계획이나 코드를 내놓기 전에, 전략이 서로 다른 세 가지 접근을 한 줄씩 제시한다. 한 줄에 접근과 핵심 트레이드오프, 비용이나 위험을 담는다. 순위를 매기고 1순위를 고른 이유를 하나만 붙인 다음, 거기서 멈춰 선택을 기다린다. 선택지마다 실제로 될 수 있다는 증거를 댄다. 합리적인 접근이 하나뿐일 때만 건너뛴다."),
     ("Delegate <span class=\"gl\">위임</span>", "작업을 좁게 잘라 새 컨텍스트의 서브에이전트에 넘긴다. 작업마다 목표와 후보 경로, 제약, 기대하는 산출물을 적어 준다. 결과가 크면 파일로 받아 따로 검증한다. 고칠 파일과 심볼을 이미 알거나 한 번에 끝나는 사소한 수정이면 위임하지 않는다."),
-    ("Plan <span class=\"gl\">계획</span>", '<code>task type · goal · files · contracts · verification · assumptions</code>를 적는다. 목표는 검증할 수 있는 형태로 쓴다. "버그를 고친다"가 아니라 "실패하는 재현 테스트를 먼저 쓰고, 그 테스트를 통과시킨다"처럼. 의도가 분명하지 않으면 <code>brainstorming</code>으로 한 번에 하나씩, 확신이 95%에 이를 때까지 묻는다. 계획은 <code>writing-plans</code>로 남긴다. 계획 승인이 사람이 개입하는 마지막 지점이다. 그 뒤로는 검토와 실행, 검증, 보고를 알아서 끝낸다.'),
+    ("Plan <span class=\"gl\">계획</span>", '<code>task type · goal · files · contracts · verification · assumptions</code>를 적는다. 목표는 검증할 수 있는 형태로 쓴다. "버그를 고친다"가 아니라 "실패하는 재현 테스트를 먼저 쓰고, 그 테스트를 통과시킨다"처럼. 무엇이 바뀌면 안 되는지 적는다. 계획은 <code>writing-plans</code>로 남긴다. 계획 승인이 사람이 개입하는 마지막 지점이다. 그 뒤로는 검토와 실행, 검증, 보고를 알아서 끝낸다.'),
     ("Execute <span class=\"gl\">실행</span>", "계획대로 간다. 현실이 계획과 다르면 계획 게이트를 다시 거친다. 추상화는 전체 인지 부하를 줄이거나 실제로 존재하는 변형을 감당할 때만 넣는다. 내 변경 때문에 쓰이지 않게 된 import와 변수, 함수는 지운다. 원래부터 죽어 있던 코드는 그대로 두고 언급만 한다."),
     ("Verify <span class=\"gl\">검증</span>", "회귀와 단위, 통합, 타입, 린트, 빌드, 재현 검사 가운데 해당하는 것을 돌린다. 명령과 실제 출력을 그대로 보여주고, 통과 / 기존 실패 / 회귀 / 건너뜀 / 환경 제약으로 나눠 정리한다."),
     ("Report <span class=\"gl\">보고</span>", "Simplified Technical English로 쓴다. 한 문장에 한 가지 생각만 담고, 쓰는 용어는 모두 정의한다. <code>CONTEXT.md</code>와 용어집, ADR에 있는 프로젝트 언어를 쓰고, 코드와 어긋나는 용어는 짚어 준다. 순서는 맥락, 바뀐 것, 손대지 않은 것, 상태. 동작 변화에는 번호를 붙이고 파일별로 묶지 않는다. 내가 다음에 해야 할 일을 밝힌다. 내 다음 결정을 바꿀 열린 질문이 하나 있다면 그것으로 끝낸다."),
@@ -125,10 +128,10 @@ def page(t):
         f'    <div><p class="k">{k}</p><p class="v">{v}</p></div>' for k, v in t["expects"])
     steps = []
     for i, (name, body) in enumerate(t["steps"], 1):
-        cls = ' class="gate"' if i == 4 else (' class="after"' if i > 4 else "")
-        mark = f'<p class="mark">{t["gate"]}</p>' if i == 4 else ""
+        cls = ' class="gate"' if i == GATE else (' class="after"' if i > GATE else "")
+        mark = f'<p class="mark">{t["gate"]}</p>' if i == GATE else ""
         steps.append(f'    <li{cls}><span class="n">{i}</span><h3>{name}</h3><p>{body}</p>{mark}</li>')
-        if i == 4:
+        if i == GATE:
             steps.append(f'    <li class="after divider" aria-hidden="true"><p class="unattended">{t["unattended"]}</p></li>')
     rows = "\n".join(f'        <tr><td>{a}</td><td><code>{b}</code></td></tr>' for a, b in PATHS)
     meta = "\n".join(f'      <span>{m}</span>' for m in t["meta"])
