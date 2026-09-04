@@ -20,4 +20,4 @@
 
 **6. Evidence.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
 
-**7. Report.** Simplified Technical English: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
+**7. Report.** Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
