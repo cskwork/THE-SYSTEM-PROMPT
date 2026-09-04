@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE-SYSTEM-PROMPT — the operating contract for every coding agent</title>
+<meta name="description" content="One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from orient to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9646;</text></svg>">
+<style>
+:root{
+  --bg:#0b0e14; --bg2:#111521; --card:rgba(255,255,255,.045); --brd:rgba(255,255,255,.10);
+  --fg:#e8ecf4; --dim:#98a2b8; --faint:#5d6a83; --acc:#7c9cff; --acc2:#4de3c1;
+  --code-bg:rgba(10,13,20,.62); --r:14px;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:light){
+  :root{
+    --bg:#f6f7fb; --bg2:#eceff6; --card:#ffffff; --brd:rgba(17,24,39,.12);
+    --fg:#141821; --dim:#4d5769; --faint:#79839a; --acc:#3450c8; --acc2:#0b8875;
+    --code-bg:#f2f4f9;
+  }
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(620px 420px at 12% -6%,color-mix(in srgb,var(--acc) 18%,transparent),transparent 65%),
+  radial-gradient(520px 360px at 88% 6%,color-mix(in srgb,var(--acc2) 12%,transparent),transparent 60%),
+  linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+.wrap{max-width:940px;margin:0 auto;padding:0 20px}
+a{color:var(--acc)}
+code{font-family:var(--mono);font-size:.88em}
+.badge{display:inline-flex;gap:8px;align-items:center;font:12px/1 var(--mono);color:var(--dim);border:1px solid var(--brd);border-radius:999px;padding:7px 13px;background:var(--card)}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--acc2)}
+header{padding:72px 0 8px}
+h1{font-size:clamp(30px,7vw,50px);font-weight:800;letter-spacing:-.025em;margin:20px 0 14px;line-height:1.08;font-family:var(--mono)}
+h1 em{font-style:normal;color:var(--acc)}
+.lede{color:var(--dim);font-size:clamp(16px,2.4vw,18px);max-width:62ch}
+.lede strong{color:var(--fg);font-weight:600}
+.btns{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border-radius:11px;font:600 14px/1.2 var(--sans);text-decoration:none;border:1px solid var(--brd);color:var(--fg);background:var(--card);cursor:pointer;transition:border-color .15s,transform .15s}
+.btn:hover{border-color:var(--acc);transform:translateY(-1px)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{filter:brightness(1.08)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:4px}
+.status{display:block;min-height:20px;margin-top:10px;font:13px/20px var(--mono);color:var(--acc2)}
+section{padding:46px 0 0}
+h2{font-size:clamp(21px,3.6vw,26px);letter-spacing:-.015em;margin-bottom:8px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+h2 .n{color:var(--acc);font:600 14px var(--mono)}
+.lead{color:var(--dim);margin-bottom:22px;max-width:70ch;font-size:15px}
+dl.blocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px}
+dl.blocks>div{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px}
+dt{font:600 15px var(--sans);letter-spacing:-.01em;margin-bottom:6px}
+dt::after{content:"";display:block;width:22px;height:2px;background:var(--acc2);margin-top:7px;opacity:.7}
+dd{color:var(--dim);font-size:14.5px}
+ol.loop{list-style:none;counter-reset:step;display:grid;gap:10px}
+ol.loop li{counter-increment:step;background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:15px 18px 15px 16px;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start}
+ol.loop li::before{content:counter(step);font:700 14px/28px var(--mono);color:var(--acc);text-align:center;width:28px;height:28px;border:1px solid var(--brd);border-radius:9px;background:var(--code-bg)}
+ol.loop h3{font:600 15px var(--sans);margin-bottom:4px;letter-spacing:-.01em}
+ol.loop p{color:var(--dim);font-size:14.5px}
+pre{background:var(--code-bg);border:1px solid var(--brd);border-radius:var(--r);padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.75;color:var(--fg)}
+pre .c{color:var(--faint)}
+pre .u{color:var(--acc2)}
+.tablewrap{overflow-x:auto;border:1px solid var(--brd);border-radius:var(--r);background:var(--card);margin-top:18px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}
+th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--brd)}
+tbody tr:last-child td{border-bottom:0}
+th{font:600 12px var(--mono);color:var(--dim);letter-spacing:.04em;text-transform:uppercase}
+td code{color:var(--acc2)}
+.note{background:var(--card);border:1px solid var(--brd);border-left:2px solid var(--acc);border-radius:var(--r);padding:16px 18px;color:var(--dim);font-size:14.5px;margin-top:18px}
+ul.expects{list-style:none;display:grid;gap:8px;margin-top:4px}
+ul.expects li{background:var(--card);border:1px solid var(--brd);border-radius:var(--r);padding:13px 16px;font-size:14.5px;color:var(--dim)}
+ul.expects b{color:var(--fg);font-weight:600}
+footer{margin:56px 0 44px;padding-top:24px;border-top:1px solid var(--brd);color:var(--dim);font-size:13.5px}
+footer p+p{margin-top:6px;color:var(--faint)}
+@media (max-width:420px){
+  header{padding:48px 0 4px}
+  ol.loop li{grid-template-columns:1fr;gap:8px}
+  .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <span class="badge"><span class="dot"></span> AGENTS.md &middot; cskwork</span>
+  <h1>THE-<em>SYSTEM</em>-PROMPT</h1>
+  <p class="lede">The operating contract I hand every coding agent. <strong>One file, <code>AGENTS.md</code></strong>: stance, an evidence rule, and a seven-step loop from orient to report. Plan confirmation is the last human gate &mdash; after it the agent runs to completion on its own.</p>
+  <div class="btns">
+    <button type="button" class="btn pri" data-copy="agents-md">Copy AGENTS.md</button>
+    <a class="btn" href="https://github.com/cskwork/THE-SYSTEM-PROMPT">Repository</a>
+    <a class="btn" href="https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md">Raw file</a>
+  </div>
+  <span class="status" role="status" aria-live="polite"></span>
+</div></header>
+
+<main>
+
+<section id="preamble"><div class="wrap">
+  <h2><span class="n">01</span>The preamble</h2>
+  <p class="lead">Four rules that hold for the whole session, before the loop starts. Text below is the file itself.</p>
+  <dl class="blocks">
+    <div>
+      <dt>Stance</dt>
+      <dd>Confirm the domain model and real data shapes before writing code or tests. Tests verify the model; they do not define it. Ask only about data loss, public APIs, security, or migrations &mdash; otherwise state assumptions and proceed. Merge worktree work once it is done; ask if the target branch is unclear.</dd>
+    </div>
+    <div>
+      <dt>Evidence over assertion</dt>
+      <dd>Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it; if it stays uncertain, ask.</dd>
+    </div>
+    <div>
+      <dt>Domain rules</dt>
+      <dd>Always read <code>~/.agents/rules/rules.md</code> (Windows: <code>%USERPROFILE%\.agents\rules\rules.md</code>).</dd>
+    </div>
+    <div>
+      <dt>Writing</dt>
+      <dd>Apply the <code>unslop</code> skill to every piece of prose: reports, commit messages, comments, docs.</dd>
+    </div>
+  </dl>
+</div></section>
+
+<section id="loop"><div class="wrap">
+  <h2><span class="n">02</span>The seven-step loop</h2>
+  <p class="lead">Orient to report. Step 4 is the only place the agent stops for a human.</p>
+  <ol class="loop">
+    <li><div>
+      <h3>Orient</h3>
+      <p>Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p>
+    </div></li>
+    <li><div>
+      <h3>Options</h3>
+      <p>Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, mark 1 recommended with one reason, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.</p>
+    </div></li>
+    <li><div>
+      <h3>Delegate</h3>
+      <p>Send narrow tasks to fresh-context subagents for planning, review, execution, and verification. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.</p>
+    </div></li>
+    <li><div>
+      <h3>Plan</h3>
+      <p>State <code>task type &middot; goal &middot; files &middot; contracts &middot; verification &middot; assumptions</code>, with the goal written as a verifiable check ("fix the bug" &rarr; "write a failing repro test, then make it pass"). If intent is unclear, use <code>brainstorming</code>: one question at a time until ~95% confident. Record the plan with <code>writing-plans</code>; do not implement before confirmation. Plan confirmation is the last human gate &mdash; after it, review, execute, verify, and report autonomously.</p>
+    </div></li>
+    <li><div>
+      <h3>Execute</h3>
+      <p>Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.</p>
+    </div></li>
+    <li><div>
+      <h3>Verify</h3>
+      <p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p>
+    </div></li>
+    <li><div>
+      <h3>Report</h3>
+      <p>Simplified Technical English, one idea per sentence, no undefined terms. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what remains unverified and what I must do next. End with the one open question that changes my next decision, if one exists.</p>
+    </div></li>
+  </ol>
+</div></section>
+
+<section id="install"><div class="wrap">
+  <h2><span class="n">03</span>Install</h2>
+  <p class="lead">Keep one canonical copy and link it into each agent's config directory.</p>
+  <pre id="install-block"><code>mkdir -p ~/.agents
+curl -fsSL <span class="u">https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md</span> \
+  -o ~/.agents/AGENTS.md
+
+ln -sfn ~/.agents/AGENTS.md ~/.claude/CLAUDE.md
+ln -sfn ~/.agents/AGENTS.md ~/.codex/AGENTS.md
+ln -sfn ~/.agents/AGENTS.md ~/.gemini/GEMINI.md            <span class="c"># Gemini CLI reads GEMINI.md</span>
+ln -sfn ~/.agents/AGENTS.md ~/.config/opencode/AGENTS.md
+ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
+  <div class="btns">
+    <button type="button" class="btn" data-copy="install-block">Copy install block</button>
+  </div>
+  <span class="status" role="status" aria-live="polite"></span>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th scope="col">Agent</th><th scope="col">Path it loads</th></tr></thead>
+      <tbody>
+        <tr><td>Claude Code</td><td><code>~/.claude/CLAUDE.md</code></td></tr>
+        <tr><td>Codex CLI</td><td><code>~/.codex/AGENTS.md</code></td></tr>
+        <tr><td>Gemini CLI</td><td><code>~/.gemini/GEMINI.md</code></td></tr>
+        <tr><td>OpenCode</td><td><code>~/.config/opencode/AGENTS.md</code></td></tr>
+        <tr><td>pi</td><td><code>~/.pi/agent/AGENTS.md</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Move any target that is a regular file to a timestamped backup before you replace it. Skip the directories whose agent you have not installed. On Windows, symlinks need Developer Mode or an admin terminal; copy the file instead and expect it to drift.</p>
+</div></section>
+
+<section id="scope"><div class="wrap">
+  <h2><span class="n">04</span>What it leaves out</h2>
+  <p class="lead">It is written to sit on top of a harness prompt, not replace it, so it carries only the rules that change default behaviour: give three ranked options before coding, verify claims against running code rather than docs, sort verification output into passed / pre-existing / regression / skipped, and report in a fixed section order.</p>
+  <h3 style="font:600 15px var(--sans);margin:22px 0 10px">What it expects to find</h3>
+  <ul class="expects">
+    <li><b><code>~/.agents/rules/rules.md</code></b> &mdash; your domain rules. The prompt reads it every session.</li>
+    <li><b>Skills named in the text</b> &mdash; <code>unslop</code>, <code>brainstorming</code>, <code>writing-plans</code>. Drop the mention if you do not have them.</li>
+    <li><b><code>CONTEXT.md</code>, a glossary, or ADRs</b> &mdash; in the repository, when they exist.</li>
+  </ul>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><a href="https://github.com/cskwork/THE-SYSTEM-PROMPT">cskwork/THE-SYSTEM-PROMPT</a> &middot; <a href="https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md">raw AGENTS.md</a></p>
+  <p><code>cskwork/pi-setup</code> and <code>cskwork/pi-setup-public</code> ship the same file, because the pi installer links <code>~/.pi/agent/AGENTS.md</code> at their copy. This repository is the canonical one; change it here first.</p>
+</div></footer>
+
+<script id="agents-md" type="text/plain"># Operating instructions
+
+**Stance.** Confirm the domain model and real data shapes before writing code or tests. Tests verify the model; they do not define it. Ask only about data loss, public APIs, security, or migrations — otherwise state assumptions and proceed. Merge worktree work once it is done; ask if the target branch is unclear.
+
+**Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it; if it stays uncertain, ask.
+
+**Domain rules.** Always read `~/.agents/rules/rules.md` (Windows: `%USERPROFILE%\.agents\rules\rules.md`).
+
+**Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
+
+**1. Orient.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
+
+**2. Options.** Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, mark 1 recommended with one reason, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.
+
+**3. Delegate.** Send narrow tasks to fresh-context subagents for planning, review, execution, and verification. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.
+
+**4. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" → "write a failing repro test, then make it pass"). If intent is unclear, use `brainstorming`: one question at a time until ~95% confident. Record the plan with `writing-plans`; do not implement before confirmation. Plan confirmation is the last human gate — after it, review, execute, verify, and report autonomously.
+
+**5. Execute.** Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.
+
+**6. Verify.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
+
+**7. Report.** Simplified Technical English, one idea per sentence, no undefined terms. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what remains unverified and what I must do next. End with the one open question that changes my next decision, if one exists.
+</script>
+<script>
+(function () {
+  var TEXT = { 'agents-md': 'AGENTS.md copied', 'install-block': 'Install block copied' };
+  function announce(btn, msg) {
+    var node = btn.parentElement, el = null;
+    while (node && !el) { el = node.querySelector('.status'); node = node.parentElement; }
+    if (!el) return;
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ''; }, 2600);
+  }
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    var src = document.getElementById(btn.getAttribute('data-copy'));
+    if (!src) return;
+    var text = src.textContent;
+    var done = function () { announce(btn, TEXT[src.id] || 'Copied'); };
+    var failed = function () { announce(btn, 'Copy failed — select the text manually'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text) ? done() : failed(); });
+    } else {
+      legacyCopy(text) ? done() : failed();
+    }
+  });
+})();
+</script>
+</body>
+</html>
