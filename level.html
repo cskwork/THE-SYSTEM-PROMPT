@@ -33,7 +33,7 @@
     <section class="station" data-i="0" style="--i:0" aria-labelledby="st0">
       <p class="tag">Before the loop</p>
       <h2 id="st0">Three rules that hold for the whole session</h2>
-      <div class="clause"><h3>Stance</h3><p>After the plan is confirmed, ask only about data loss, public APIs, security, or migrations; otherwise state assumptions and proceed. Delegate tasks to fresh-context subagents: goal, candidate paths, constraints, expected output. Take large results back as files. Skip it when you already know the file and symbol, or the edit is trivial. Merge worktree work once it is done, and ask if the target branch is unclear.</p></div>
+      <div class="clause"><h3>Stance</h3><p>After the plan is confirmed, ask only about data loss, public APIs, security, or migrations; otherwise state assumptions and proceed. Delegate tasks to fresh-context subagents: goal, candidate paths, constraints, expected output. Take large results back as files. Skip it when you already know the file and symbol, or the edit is trivial. Worktree work must be merged back into its origin branch once it is done; ask first only if the target branch is unclear.</p></div>
       <div class="clause"><h3>Evidence over assertion</h3><p>Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.</p></div>
       <div class="clause"><h3>Domain rules</h3><p>Always read <code>~/.agents/rules/rules.md</code> when it exists.</p></div>
     </section>
@@ -45,7 +45,7 @@
     <section class="station" data-i="2" style="--i:2" aria-labelledby="st2">
       <p class="tag">Step 2 of 7</p>
       <h2 id="st2">Intent</h2>
-      <p class="body">Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p>
+      <p class="body">Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Grill me one question at a time, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p>
     </section>
     <section class="station" data-i="3" style="--i:3" aria-labelledby="st3">
       <p class="tag">Step 3 of 7</p>
@@ -55,7 +55,7 @@
     <section class="station gate" data-i="4" style="--i:4" aria-labelledby="st4">
       <p class="tag">Step 4 of 7</p>
       <h2 id="st4">Plan</h2>
-      <p class="body">State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p>
+      <p class="body">State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p>
       <div class="door" aria-hidden="true"><div class="leaf l"></div><div class="leaf r"></div></div>
       <p class="mark">Last human gate</p>
       <button type="button" class="btn approve">Approve the plan</button>
@@ -73,12 +73,12 @@
     <section class="station after" data-i="7" style="--i:7" aria-labelledby="st7">
       <p class="tag">Step 7 of 7</p>
       <h2 id="st7">Report</h2>
-      <p class="body">Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p>
+      <p class="body">Simplified Plain Language: one idea per sentence, every term defined. State what I must do next. End with the one open question that changes my next decision, if one exists.</p>
     </section>
     <section class="station outro" data-i="8" style="--i:8" aria-labelledby="st8">
       <p class="tag">End of the loop</p>
       <h2 id="st8">Take the file with you</h2>
-      <p class="body">3,119 bytes. Copy it, put it at <code>~/.agents/AGENTS.md</code>, and link it into every agent you run.</p>
+      <p class="body">2,889 bytes. Copy it, put it at <code>~/.agents/AGENTS.md</code>, and link it into every agent you run.</p>
       <div class="acts">
         <button type="button" class="btn" data-copy="agents-md">Copy the contract</button>
         <a class="btn ghost" href="index.html#install">Install it</a>
@@ -110,7 +110,7 @@
 
 <script id="agents-md" type="text/plain"># Operating instructions
 
-**Stance.** After the plan is confirmed, ask only about data loss, public APIs, security, or migrations; otherwise state assumptions and proceed. Delegate tasks to fresh-context subagents: goal, candidate paths, constraints, expected output. Take large results back as files. Skip it when you already know the file and symbol, or the edit is trivial. Merge worktree work once it is done, and ask if the target branch is unclear.
+**Stance.** After the plan is confirmed, ask only about data loss, public APIs, security, or migrations; otherwise state assumptions and proceed. Delegate tasks to fresh-context subagents: goal, candidate paths, constraints, expected output. Take large results back as files. Skip it when you already know the file and symbol, or the edit is trivial. Worktree work must be merged back into its origin branch once it is done; ask first only if the target branch is unclear.
 
 **Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.
 
@@ -118,17 +118,17 @@
 
 **1. Explore.** Read the repository instructions, domain model, and real data shapes; tests verify that model, they do not define it. Then read the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
-**2. Intent.** Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with `brainstorming`, five at most. Label each claim `verified: how` or `assumed: why`, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.
+**2. Intent.** Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Grill me one question at a time, five at most. Label each claim `verified: how` or `assumed: why`, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.
 
 **3. Options.** Give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one.
 
-**4. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with `writing-plans`. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.
+**4. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.
 
 **5. Execute.** Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.
 
 **6. Evidence.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
 
-**7. Report.** Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
+**7. Report.** Simplified Plain Language: one idea per sentence, every term defined. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
 <script>window.COPY_MSG={"agents-md":"AGENTS.md copied"};</script>
 <script src="app.js"></script>
