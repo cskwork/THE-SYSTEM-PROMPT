@@ -6,8 +6,6 @@
 
 **Domain rules.** Always read `~/.agents/rules/rules.md`.
 
-**Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
-
 **1. Explore.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
 **2. Intent.** Before options or code, restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with `brainstorming`, five at most. Label each claim `verified: how` or `assumed: why`, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.
