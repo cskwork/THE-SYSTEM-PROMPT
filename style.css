@@ -84,10 +84,9 @@ h2{font:600 13px/1.5 var(--mono);letter-spacing:.13em;text-transform:uppercase;c
 .loop.in li:nth-child(2),.loop.in li:nth-child(2) .n{animation-delay:.08s}
 .loop.in li:nth-child(3),.loop.in li:nth-child(3) .n{animation-delay:.14s}
 .loop.in li:nth-child(4),.loop.in li:nth-child(4) .n{animation-delay:.20s}
-.loop.in li:nth-child(5),.loop.in li:nth-child(5) .n{animation-delay:.26s}
-.loop.in li:nth-child(7),.loop.in li:nth-child(7) .n{animation-delay:.46s}
-.loop.in li:nth-child(8),.loop.in li:nth-child(8) .n{animation-delay:.52s}
-.loop.in li:nth-child(9),.loop.in li:nth-child(9) .n{animation-delay:.58s}
+.loop.in li:nth-child(6),.loop.in li:nth-child(6) .n{animation-delay:.44s}
+.loop.in li:nth-child(7),.loop.in li:nth-child(7) .n{animation-delay:.50s}
+.loop.in li:nth-child(8),.loop.in li:nth-child(8) .n{animation-delay:.56s}
 @keyframes rail{from{border-left-color:transparent}to{border-left-color:var(--rule)}}
 .loop.in .gate{animation-name:railgate}
 @keyframes railgate{from{border-left-color:transparent}to{border-left-color:var(--gate)}}
