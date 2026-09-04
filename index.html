@@ -105,15 +105,15 @@ footer p+p{margin-top:6px;color:var(--faint)}
   <dl class="blocks">
     <div>
       <dt>Stance</dt>
-      <dd>Confirm the domain model and real data shapes before writing code or tests. Tests verify the model; they do not define it. Ask only about data loss, public APIs, security, or migrations &mdash; otherwise state assumptions and proceed. Merge worktree work once it is done; ask if the target branch is unclear.</dd>
+      <dd>Tests verify the domain model; they do not define it. Ask only about data loss, public APIs, security, or migrations. Otherwise state assumptions and proceed. Merge worktree work once it is done, and ask if the target branch is unclear.</dd>
     </div>
     <div>
       <dt>Evidence over assertion</dt>
-      <dd>Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it; if it stays uncertain, ask.</dd>
+      <dd>Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.</dd>
     </div>
     <div>
       <dt>Domain rules</dt>
-      <dd>Always read <code>~/.agents/rules/rules.md</code> (Windows: <code>%USERPROFILE%\.agents\rules\rules.md</code>).</dd>
+      <dd>Always read <code>~/.agents/rules/rules.md</code>.</dd>
     </div>
     <div>
       <dt>Writing</dt>
@@ -132,15 +132,15 @@ footer p+p{margin-top:6px;color:var(--faint)}
     </div></li>
     <li><div>
       <h3>Options</h3>
-      <p>Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, mark 1 recommended with one reason, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.</p>
+      <p>Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.</p>
     </div></li>
     <li><div>
       <h3>Delegate</h3>
-      <p>Send narrow tasks to fresh-context subagents for planning, review, execution, and verification. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.</p>
+      <p>Send narrow tasks to fresh-context subagents. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.</p>
     </div></li>
     <li><div>
       <h3>Plan</h3>
-      <p>State <code>task type &middot; goal &middot; files &middot; contracts &middot; verification &middot; assumptions</code>, with the goal written as a verifiable check ("fix the bug" &rarr; "write a failing repro test, then make it pass"). If intent is unclear, use <code>brainstorming</code>: one question at a time until ~95% confident. Record the plan with <code>writing-plans</code>; do not implement before confirmation. Plan confirmation is the last human gate &mdash; after it, review, execute, verify, and report autonomously.</p>
+      <p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). If intent is unclear, use <code>brainstorming</code>: one question at a time until ~95% confident. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.</p>
     </div></li>
     <li><div>
       <h3>Execute</h3>
@@ -152,7 +152,7 @@ footer p+p{margin-top:6px;color:var(--faint)}
     </div></li>
     <li><div>
       <h3>Report</h3>
-      <p>Simplified Technical English, one idea per sentence, no undefined terms. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what remains unverified and what I must do next. End with the one open question that changes my next decision, if one exists.</p>
+      <p>Simplified Technical English: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p>
     </div></li>
   </ol>
 </div></section>
@@ -208,27 +208,27 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 <script id="agents-md" type="text/plain"># Operating instructions
 
-**Stance.** Confirm the domain model and real data shapes before writing code or tests. Tests verify the model; they do not define it. Ask only about data loss, public APIs, security, or migrations — otherwise state assumptions and proceed. Merge worktree work once it is done; ask if the target branch is unclear.
+**Stance.** Tests verify the domain model; they do not define it. Ask only about data loss, public APIs, security, or migrations. Otherwise state assumptions and proceed. Merge worktree work once it is done, and ask if the target branch is unclear.
 
-**Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it; if it stays uncertain, ask.
+**Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.
 
-**Domain rules.** Always read `~/.agents/rules/rules.md` (Windows: `%USERPROFILE%\.agents\rules\rules.md`).
+**Domain rules.** Always read `~/.agents/rules/rules.md`.
 
 **Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
 
 **1. Orient.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
-**2. Options.** Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, mark 1 recommended with one reason, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.
+**2. Options.** Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Skip only when one approach is clearly the only reasonable one.
 
-**3. Delegate.** Send narrow tasks to fresh-context subagents for planning, review, execution, and verification. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.
+**3. Delegate.** Send narrow tasks to fresh-context subagents. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.
 
-**4. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" → "write a failing repro test, then make it pass"). If intent is unclear, use `brainstorming`: one question at a time until ~95% confident. Record the plan with `writing-plans`; do not implement before confirmation. Plan confirmation is the last human gate — after it, review, execute, verify, and report autonomously.
+**4. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). If intent is unclear, use `brainstorming`: one question at a time until ~95% confident. Record the plan with `writing-plans`. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.
 
 **5. Execute.** Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.
 
 **6. Verify.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
 
-**7. Report.** Simplified Technical English, one idea per sentence, no undefined terms. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what remains unverified and what I must do next. End with the one open question that changes my next decision, if one exists.
+**7. Report.** Simplified Technical English: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
 <script>
 (function () {
