@@ -20,7 +20,7 @@
   <div class="grid masthead">
     <p class="meta">
       <span>AGENTS.md</span>
-      <span>3,231 bytes</span>
+      <span>3,125 bytes</span>
       <span>7 steps</span>
       <span>5 agent paths</span>
     </p>
@@ -38,12 +38,11 @@
 <section id="preamble" class="sheet"><div class="grid">
   <h2>The preamble</h2>
   <div>
-  <p class="lead">Four rules that hold for the whole session, before the loop starts. Every line below is the file itself.</p>
+  <p class="lead">Three rules that hold for the whole session, before the loop starts. Every line below is the file itself.</p>
   <div class="rows">
     <div><p class="k">Stance</p><p class="v">Tests verify the domain model; they do not define it. Ask only about data loss, public APIs, security, or migrations. Otherwise state assumptions and proceed. Delegate narrow tasks to fresh-context subagents: goal, candidate paths, constraints, expected output. Take large results back as files. Skip it when you already know the file and symbol, or the edit is trivial. Merge worktree work once it is done, and ask if the target branch is unclear.</p></div>
     <div><p class="k">Evidence over assertion</p><p class="v">Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.</p></div>
     <div><p class="k">Domain rules</p><p class="v">Always read <code>~/.agents/rules/rules.md</code>.</p></div>
-    <div><p class="k">Writing</p><p class="v">Apply the <code>unslop</code> skill to every piece of prose: reports, commit messages, comments, docs.</p></div>
   </div>
   </div>
 </div></section>
@@ -103,7 +102,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
   <p class="lead">It is written to sit on top of a harness prompt, not replace it, so it carries only the rules that change default behaviour: give three ranked options before coding, verify claims against running code rather than docs, sort verification output into passed / pre-existing / regression / skipped, and report in a fixed section order.</p>
   <div class="rows">
     <div><p class="k">Reads every session</p><p class="v"><b><code>~/.agents/rules/rules.md</code></b> — your domain rules.</p></div>
-    <div><p class="k">Skills it names</p><p class="v"><b><code>unslop</code>, <code>brainstorming</code>, <code>writing-plans</code></b> — drop the mention if you do not have them.</p></div>
+    <div><p class="k">Skills it names</p><p class="v"><b><code>brainstorming</code>, <code>writing-plans</code></b> — drop the mention if you do not have them.</p></div>
     <div><p class="k">Reads when present</p><p class="v"><b><code>CONTEXT.md</code>, a glossary, or ADRs</b> in the repository.</p></div>
   </div>
   </div>
@@ -122,8 +121,6 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 **Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.
 
 **Domain rules.** Always read `~/.agents/rules/rules.md`.
-
-**Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
 
 **1. Explore.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
