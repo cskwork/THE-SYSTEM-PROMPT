@@ -6,134 +6,26 @@
 <title>THE-SYSTEM-PROMPT — the operating contract for every coding agent</title>
 <meta name="description" content="One file, AGENTS.md: a stance, an evidence rule, and a seven-step loop from orient to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
 <meta name="color-scheme" content="light dark">
+<link rel="alternate" hreflang="en" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
+<link rel="alternate" hreflang="ko" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2315171c'/><path d='M10 7v18M16 7v18' stroke='%23fbfaf7' stroke-width='2'/><path d='M7 16h18' stroke='%23c0392b' stroke-width='2'/></svg>">
-<style>
-:root{
-  --paper:#fbfaf7; --paper-2:#f2f0eb; --ink:#15171c; --ink-2:#545a67; --ink-3:#636978;
-  --rule:rgba(21,23,28,.17); --rule-soft:rgba(21,23,28,.085); --gate:#b3372a;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --ease:cubic-bezier(.16,1,.3,1);
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --paper:#101216; --paper-2:#171a20; --ink:#e9e7e2; --ink-2:#a2a8b4; --ink-3:#8b929e;
-    --rule:rgba(233,231,226,.20); --rule-soft:rgba(233,231,226,.10); --gate:#ff6a52;
-  }
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scrollbar-color:var(--rule) transparent}
-body{background:var(--paper);color:var(--ink);font:16.5px/1.62 var(--sans);-webkit-font-smoothing:antialiased;overflow-wrap:break-word;caret-color:var(--gate)}
-::selection{background:var(--gate);color:var(--paper)}
-::-webkit-scrollbar{width:11px;height:11px}
-::-webkit-scrollbar-thumb{background:var(--rule);border:3px solid var(--paper);border-radius:99px}
-::-webkit-scrollbar-track{background:transparent}
-:focus-visible{outline:2px solid var(--gate);outline-offset:3px}
-.sheet{max-width:840px;margin:0 auto;padding-inline:26px}
-p{max-width:68ch}
-a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--rule);transition:text-decoration-color .18s}
-a:hover{text-decoration-color:var(--gate)}
-code{font-family:var(--mono);font-size:.87em;color:var(--ink)}
-.ic{width:11px;height:11px;flex:none;stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
-
-/* masthead */
-header{padding:88px 0 0}
-h1{font:800 clamp(38px,8.4vw,70px)/0.99 var(--sans);letter-spacing:-.038em;margin-bottom:22px}
-h1 span{color:var(--gate)}
-.lede{color:var(--ink-2);font-size:clamp(18px,2.4vw,21px);max-width:60ch}
-.lede b{color:var(--ink);font-weight:600}
-.meta{margin-top:26px;padding-top:14px;border-top:1px solid var(--rule);font:12.5px/1.6 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:6px 18px}
-.acts{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:26px}
-.btn{display:inline-flex;align-items:center;gap:8px;font:600 15px/1 var(--sans);padding:13px 20px;border:1px solid var(--ink);border-radius:3px;background:var(--ink);color:var(--paper);cursor:pointer;transition:transform .18s var(--ease),box-shadow .18s var(--ease);box-shadow:0 1px 2px rgba(0,0,0,.16),0 8px 20px -12px rgba(0,0,0,.5)}
-.btn:hover{transform:translateY(-1px);box-shadow:0 2px 3px rgba(0,0,0,.18),0 14px 26px -14px rgba(0,0,0,.55)}
-.btn:active{transform:translateY(0)}
-.link{display:inline-flex;align-items:center;gap:7px;font:500 15px/1 var(--sans);color:var(--ink-2)}
-.link:hover{color:var(--ink)}
-.status{display:block;min-height:19px;margin-top:12px;font:12.5px/19px var(--mono);color:var(--gate)}
-
-/* sections */
-section{padding:64px 0 0}
-h2{font:600 12.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);padding-bottom:14px;border-bottom:1px solid var(--rule);margin-bottom:26px}
-.lead{color:var(--ink-2);font-size:16.5px;margin-bottom:26px}
-
-/* clause rows */
-.rows>div{display:grid;grid-template-columns:170px 1fr;gap:26px;padding:18px 0;border-top:1px solid var(--rule-soft)}
-.rows>div:first-child{border-top:0;padding-top:0}
-.rows dt,.rows .k{font:600 12.5px/1.5 var(--mono);letter-spacing:.055em;text-transform:uppercase;color:var(--ink);padding-top:3px}
-.rows dd,.rows .v{color:var(--ink-2);font-size:16.5px}
-.rows .v b,.rows dd b{color:var(--ink);font-weight:600}
-
-/* the loop */
-.loop{list-style:none;margin-left:15px}
-.loop li{position:relative;padding:0 0 30px 34px;border-left:1px solid var(--rule)}
-.loop li:last-child{border-left-color:transparent;padding-bottom:0}
-.loop .n{position:absolute;left:-15px;top:-1px;width:29px;height:29px;display:grid;place-items:center;font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-2);background:var(--paper);border:1px solid var(--rule);border-radius:99px}
-.loop h3{font:600 19px/1.28 var(--sans);letter-spacing:-.012em;margin:4px 0 7px}
-.loop p{color:var(--ink-2)}
-.loop .gate{border-left-color:var(--gate)}
-.loop .gate .n{color:var(--paper);background:var(--gate);border-color:var(--gate)}
-.loop .gate h3{color:var(--gate)}
-.mark{display:inline-flex;align-items:center;gap:8px;margin:12px 0 0;font:600 12.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--gate)}
-.mark::before{content:"";width:22px;height:1px;background:var(--gate)}
-.loop .after{border-left-style:dashed;border-left-color:var(--rule)}
-.loop li.divider{padding-bottom:16px}
-.unattended{margin-left:34px;font:12.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
-/* one authored moment: the rail draws, the gate lands after it */
-.loop.anim li{border-left-color:transparent}
-.loop.anim .n,.loop.anim .mark{opacity:0}
-.loop.in li{animation:rail .7s var(--ease) both}
-.loop.in .n{animation:pop .5s var(--ease) both}
-.loop.in .mark{animation:pop .5s var(--ease) both .62s}
-.loop.in li:nth-child(1),.loop.in li:nth-child(1) .n{animation-delay:.02s}
-.loop.in li:nth-child(2),.loop.in li:nth-child(2) .n{animation-delay:.09s}
-.loop.in li:nth-child(3),.loop.in li:nth-child(3) .n{animation-delay:.16s}
-.loop.in li:nth-child(4),.loop.in li:nth-child(4) .n{animation-delay:.23s}
-.loop.in li:nth-child(6),.loop.in li:nth-child(6) .n{animation-delay:.44s}
-.loop.in li:nth-child(7),.loop.in li:nth-child(7) .n{animation-delay:.51s}
-.loop.in li:nth-child(8),.loop.in li:nth-child(8) .n{animation-delay:.58s}
-@keyframes rail{from{border-left-color:transparent}to{border-left-color:var(--rule)}}
-.loop.in .gate{animation-name:railgate}
-@keyframes railgate{from{border-left-color:transparent}to{border-left-color:var(--gate)}}
-@keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-
-/* code + table */
-pre{margin-top:4px;padding:20px 22px;background:var(--paper-2);border:1px solid var(--rule-soft);border-radius:4px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.8}
-pre .c{color:var(--ink-2)}
-pre .u{color:var(--gate)}
-table{width:100%;border-collapse:collapse;font-size:16.5px;margin-top:30px}
-caption{text-align:left;font:600 12.5px/1 var(--mono);letter-spacing:.055em;text-transform:uppercase;color:var(--ink-3);padding-bottom:12px}
-th,td{text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--rule-soft)}
-th{font:600 12.5px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
-td:last-child{color:var(--ink-2)}
-td code{color:var(--ink)}
-.caveat{margin-top:30px;padding-top:16px;border-top:1px solid var(--rule);color:var(--ink-2)}
-.caveat b{display:block;font:600 12.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
-footer{margin-top:80px;padding:26px 0 56px;border-top:1px solid var(--rule);color:var(--ink-2);font:13.5px/1.7 var(--mono)}
-footer p{max-width:74ch}
-footer p+p{margin-top:10px;color:var(--ink-3)}
-@media (max-width:640px){
-  header{padding-top:56px}
-  .rows>div{grid-template-columns:1fr;gap:8px;padding:16px 0}
-  .rows dt,.rows .k{padding-top:0}
-  .btn{width:100%;justify-content:center}
-  table{font-size:15px}
-  th,td{padding:11px 10px 11px 0}
-}
-@media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .loop.anim li{border-left-color:var(--rule)}
-  .loop.anim .gate{border-left-color:var(--gate)}
-  .loop.anim .n,.loop.anim .mark{opacity:1}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v6"/><path d="M10 2 2.5 9.5"/></symbol></svg>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol></svg>
 
 <header class="sheet">
+  <nav class="lang"><a href="index.html" aria-current="page">EN</a><a href="ko.html">한국어</a></nav>
   <h1>THE-<span>SYSTEM</span>-PROMPT</h1>
-  <p class="lede">The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and a seven-step loop from orient to report. Plan confirmation is the last human gate. After it the agent runs to completion on its own.</p>
-  <p class="meta"><span>AGENTS.md</span><span>2,861 bytes</span><span>7 steps</span><span>5 agent paths</span></p>
+  <div class="grid masthead">
+    <p class="meta">
+      <span>AGENTS.md</span>
+      <span>2,861 bytes</span>
+      <span>7 steps</span>
+      <span>5 agent paths</span>
+    </p>
+    <p class="lede">The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and a seven-step loop from orient to report.</p>
+  </div>
   <div class="acts">
     <button type="button" class="btn" data-copy="agents-md">Copy the contract</button>
     <a class="link" href="https://github.com/cskwork/THE-SYSTEM-PROMPT">Repository <svg class="ic"><use href="#ext"/></svg></a>
@@ -143,19 +35,22 @@ footer p+p{margin-top:10px;color:var(--ink-3)}
 </header>
 
 <main>
-<section id="preamble" class="sheet">
+<section id="preamble" class="sheet"><div class="grid">
   <h2>The preamble</h2>
+  <div>
   <p class="lead">Four rules that hold for the whole session, before the loop starts. Every line below is the file itself.</p>
-  <dl class="rows">
-    <div><dt>Stance</dt><dd>Tests verify the domain model; they do not define it. Ask only about data loss, public APIs, security, or migrations. Otherwise state assumptions and proceed. Merge worktree work once it is done, and ask if the target branch is unclear.</dd></div>
-    <div><dt>Evidence over assertion</dt><dd>Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.</dd></div>
-    <div><dt>Domain rules</dt><dd>Always read <code>~/.agents/rules/rules.md</code>.</dd></div>
-    <div><dt>Writing</dt><dd>Apply the <code>unslop</code> skill to every piece of prose: reports, commit messages, comments, docs.</dd></div>
-  </dl>
-</section>
+  <div class="rows">
+    <div><p class="k">Stance</p><p class="v">Tests verify the domain model; they do not define it. Ask only about data loss, public APIs, security, or migrations. Otherwise state assumptions and proceed. Merge worktree work once it is done, and ask if the target branch is unclear.</p></div>
+    <div><p class="k">Evidence over assertion</p><p class="v">Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.</p></div>
+    <div><p class="k">Domain rules</p><p class="v">Always read <code>~/.agents/rules/rules.md</code>.</p></div>
+    <div><p class="k">Writing</p><p class="v">Apply the <code>unslop</code> skill to every piece of prose: reports, commit messages, comments, docs.</p></div>
+  </div>
+  </div>
+</div></section>
 
-<section id="loop" class="sheet">
+<section id="loop" class="sheet"><div class="grid">
   <h2>The seven-step loop</h2>
+  <div>
   <p class="lead">Orient to report. Step four is the only place the agent stops for a human.</p>
   <ol class="loop anim">
     <li><span class="n">1</span><h3>Orient</h3><p>Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p></li>
@@ -167,10 +62,12 @@ footer p+p{margin-top:10px;color:var(--ink-3)}
     <li class="after"><span class="n">6</span><h3>Verify</h3><p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p></li>
     <li class="after"><span class="n">7</span><h3>Report</h3><p>Simplified Technical English: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p></li>
   </ol>
-</section>
+  </div>
+</div></section>
 
-<section id="install" class="sheet">
+<section id="install" class="sheet"><div class="grid">
   <h2>Install</h2>
+  <div>
   <p class="lead">Keep one canonical copy and link it into each agent's config directory.</p>
   <pre id="install-block"><code>mkdir -p ~/.agents
 curl -fsSL <span class="u">https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md</span> \
@@ -189,31 +86,34 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
     <caption>Where each agent reads it</caption>
     <thead><tr><th scope="col">Agent</th><th scope="col">Path it loads</th></tr></thead>
     <tbody>
-      <tr><td>Claude Code</td><td><code>~/.claude/CLAUDE.md</code></td></tr>
-      <tr><td>Codex CLI</td><td><code>~/.codex/AGENTS.md</code></td></tr>
-      <tr><td>Gemini CLI</td><td><code>~/.gemini/GEMINI.md</code></td></tr>
-      <tr><td>OpenCode</td><td><code>~/.config/opencode/AGENTS.md</code></td></tr>
-      <tr><td>pi</td><td><code>~/.pi/agent/AGENTS.md</code></td></tr>
+        <tr><td>Claude Code</td><td><code>~/.claude/CLAUDE.md</code></td></tr>
+        <tr><td>Codex CLI</td><td><code>~/.codex/AGENTS.md</code></td></tr>
+        <tr><td>Gemini CLI</td><td><code>~/.gemini/GEMINI.md</code></td></tr>
+        <tr><td>OpenCode</td><td><code>~/.config/opencode/AGENTS.md</code></td></tr>
+        <tr><td>pi</td><td><code>~/.pi/agent/AGENTS.md</code></td></tr>
     </tbody>
   </table>
   <p class="caveat"><b>Before you run it</b>Move any target that is a regular file to a timestamped backup before you replace it. Skip the directories whose agent you have not installed. On Windows, symlinks need Developer Mode or an admin terminal; copy the file instead and expect it to drift.</p>
-</section>
+  </div>
+</div></section>
 
-<section id="scope" class="sheet">
+<section id="scope" class="sheet"><div class="grid">
   <h2>What it leaves out</h2>
+  <div>
   <p class="lead">It is written to sit on top of a harness prompt, not replace it, so it carries only the rules that change default behaviour: give three ranked options before coding, verify claims against running code rather than docs, sort verification output into passed / pre-existing / regression / skipped, and report in a fixed section order.</p>
   <div class="rows">
     <div><p class="k">Reads every session</p><p class="v"><b><code>~/.agents/rules/rules.md</code></b> — your domain rules.</p></div>
     <div><p class="k">Skills it names</p><p class="v"><b><code>unslop</code>, <code>brainstorming</code>, <code>writing-plans</code></b> — drop the mention if you do not have them.</p></div>
     <div><p class="k">Reads when present</p><p class="v"><b><code>CONTEXT.md</code>, a glossary, or ADRs</b> in the repository.</p></div>
   </div>
-</section>
+  </div>
+</div></section>
 </main>
 
-<footer class="sheet">
+<footer class="sheet"><div class="grid">
   <p><a href="https://github.com/cskwork/THE-SYSTEM-PROMPT">cskwork/THE-SYSTEM-PROMPT</a> · <a href="https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md">raw AGENTS.md</a></p>
   <p>cskwork/pi-setup and cskwork/pi-setup-public ship the same file, because the pi installer links ~/.pi/agent/AGENTS.md at their copy. This repository is the canonical one; change it here first.</p>
-</footer>
+</div></footer>
 
 <script id="agents-md" type="text/plain"># Operating instructions
 
@@ -239,56 +139,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 **7. Report.** Simplified Technical English: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
-<script>
-(function () {
-  var TEXT = { 'agents-md': 'AGENTS.md copied', 'install-block': 'Install block copied' };
-  function announce(btn, msg) {
-    var node = btn.parentElement, el = null;
-    while (node && !el) { el = node.querySelector('.status'); node = node.parentElement; }
-    if (!el) return;
-    el.textContent = msg;
-    clearTimeout(el._t);
-    el._t = setTimeout(function () { el.textContent = ''; }, 2600);
-  }
-  function legacyCopy(text) {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
-    document.body.appendChild(ta);
-    ta.select();
-    var ok = false;
-    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-    document.body.removeChild(ta);
-    return ok;
-  }
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-copy]');
-    if (!btn) return;
-    var src = document.getElementById(btn.getAttribute('data-copy'));
-    if (!src) return;
-    var text = src.textContent;
-    var done = function () { announce(btn, TEXT[src.id] || 'Copied'); };
-    var failed = function () { announce(btn, 'Copy failed — select the text manually'); };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text) ? done() : failed(); });
-    } else {
-      legacyCopy(text) ? done() : failed();
-    }
-  });
-})();
-</script>
-<script>
-(function () {
-  var loop = document.querySelector('.loop');
-  if (!loop) return;
-  if (!('IntersectionObserver' in window) ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches) { loop.classList.add('in'); return; }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) { loop.classList.add('in'); io.disconnect(); } });
-  }, { rootMargin: '0px 0px -18% 0px' });
-  io.observe(loop);
-})();
-</script>
+<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};</script>
+<script src="app.js"></script>
 </body>
 </html>

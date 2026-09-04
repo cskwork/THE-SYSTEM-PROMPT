@@ -41,3 +41,15 @@ Developer Mode or an admin terminal; copy the file instead and expect it to drif
 `cskwork/pi-setup` and `cskwork/pi-setup-public` ship the same file, because the pi
 installer links `~/.pi/agent/AGENTS.md` at their copy. This repository is the canonical
 one; change it here first.
+
+## The landing page
+
+<https://cskwork.github.io/THE-SYSTEM-PROMPT/> reads the same contract in English, and
+<https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html> in Korean. Both pages are generated:
+
+```bash
+python3 build.py    # rewrites index.html and ko.html from AGENTS.md
+```
+
+The copy button on each page ships `AGENTS.md` verbatim, so run the build after editing the
+contract or the two pages will quote a file that no longer exists.
