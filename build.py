@@ -126,7 +126,7 @@ UI = {
          "hint": "Approve the plan first.",
          "theme": ["Dark", "Light"], "agents": "Agents you use", "shell": "Shell",
          "unix": "macOS / Linux", "win": "Windows PowerShell", "perrepo": "Per-repo (Cursor, Windsurf, Antigravity)",
-         "verify": "Then confirm every link resolves", "copyverify": "Copy the check", "wincopy": "# Windows: copy instead of link; rerun after each update"},
+         "verify": "Then confirm every link resolves", "copyverify": "Copy the check", "wincopy": "# Windows: copy instead of link; rerun after each update", "level": "Walk the level"},
   "ko": {"illus": "단계를 열면 가상의 버그 하나를 끝까지 따라갑니다. 비밀번호 재설정 링크가 “Invalid token”으로 튕기는 문제입니다. 대화는 예시이지 실제 기록이 아닙니다.",
          "see": "이 단계 보기", "locked": "승인을 기다린다", "approve": "계획 승인",
          "approved": "계획이 승인됐다. 5~7단계는 사람 없이 진행된다.", "reset": "처음부터",
@@ -134,7 +134,7 @@ UI = {
          "hint": "먼저 계획을 승인해야 한다.",
          "theme": ["다크", "라이트"], "agents": "쓰는 에이전트", "shell": "셸",
          "unix": "macOS / Linux", "win": "Windows PowerShell", "perrepo": "레포별 (Cursor, Windsurf, Antigravity)",
-         "verify": "그다음 링크가 전부 풀리는지 확인", "copyverify": "확인 명령 복사", "wincopy": "# Windows: 링크 대신 복사. 업데이트 때마다 다시 실행"},
+         "verify": "그다음 링크가 전부 풀리는지 확인", "copyverify": "확인 명령 복사", "wincopy": "# Windows: 링크 대신 복사. 업데이트 때마다 다시 실행", "level": "레벨로 걷기"},
 }
 
 XC = {
@@ -193,6 +193,112 @@ def loop_markup(t):
     return "\n".join(out)
 
 
+# ---- the level: the contract itself, parsed from AGENTS.md, laid along a corridor ----
+def parse_contract():
+    import re
+    paras = [p.strip() for p in AGENTS.strip().split("\n\n") if p.strip() and not p.startswith("# ")]
+    out = []
+    for p in paras:
+        m = re.match(r"\*\*(?:(\d+)\. )?([^*]+?)\.\*\*\s+(.*)", p, re.S)
+        n, label, text = m.group(1), m.group(2), m.group(3)
+        text = html.escape(text, quote=False)
+        text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+        out.append((int(n) if n else None, label, text))
+    return out
+
+
+def level_page():
+    blocks = parse_contract()
+    pre = [b for b in blocks if b[0] is None]
+    steps = [b for b in blocks if b[0] is not None]
+    stations = []
+    pre_html = "\n".join(f'      <div class="clause"><h3>{l}</h3><p>{t}</p></div>' for _, l, t in pre)
+    stations.append(f'''    <section class="station" data-i="0" style="--i:0" aria-labelledby="st0">
+      <p class="tag">Before the loop</p>
+      <h2 id="st0">Three rules that hold for the whole session</h2>
+{pre_html}
+    </section>''')
+    for n, l, t in steps:
+        gate = n == GATE
+        extra = ""
+        if gate:
+            extra = '''
+      <div class="door" aria-hidden="true"><div class="leaf l"></div><div class="leaf r"></div></div>
+      <p class="mark">Last human gate</p>
+      <button type="button" class="btn approve">Approve the plan</button>'''
+        stations.append(f'''    <section class="station{" gate" if gate else ""}{" after" if n > GATE else ""}" data-i="{n}" style="--i:{n}" aria-labelledby="st{n}">
+      <p class="tag">Step {n} of 7</p>
+      <h2 id="st{n}">{l}</h2>
+      <p class="body">{t}</p>{extra}
+    </section>''')
+    stations.append(f'''    <section class="station outro" data-i="8" style="--i:8" aria-labelledby="st8">
+      <p class="tag">End of the loop</p>
+      <h2 id="st8">Take the file with you</h2>
+      <p class="body">{BYTES}. Copy it, put it at <code>~/.agents/AGENTS.md</code>, and link it into every agent you run.</p>
+      <div class="acts">
+        <button type="button" class="btn" data-copy="agents-md">Copy the contract</button>
+        <a class="btn ghost" href="index.html#install">Install it</a>
+      </div>
+      <span class="status" role="status" aria-live="polite"></span>
+    </section>''')
+    dots = "\n".join(f'      <li><button type="button" data-go="{i}" aria-label="Station {i}"></button></li>' for i in range(9))
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE-SYSTEM-PROMPT — the level</title>
+<meta name="description" content="The operating contract laid out as a corridor: three standing rules, seven stations, one gate you have to open yourself. Every word is the file.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="THE-SYSTEM-PROMPT — the level">
+<meta property="og:description" content="Walk the contract: three rules, seven stations, one gate. Every word is the file.">
+<meta property="og:url" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/level.html">
+<meta property="og:image" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2315171c'/><path d='M10 7v18M16 7v18' stroke='%23fbfaf7' stroke-width='2'/><path d='M7 16h18' stroke='%23c0392b' stroke-width='2'/></svg>">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="level.css">
+</head>
+<body class="level">
+<a class="skip" href="#flat">Skip the corridor, read it flat</a>
+<header class="hud">
+  <a class="home" href="index.html">THE-<span>SYSTEM</span>-PROMPT</a>
+  <p class="where" role="status" aria-live="polite"></p>
+  <div class="hud-acts">
+    <button type="button" class="flat-toggle" aria-pressed="false">Flat view</button>
+    <button type="button" class="theme" hidden data-labels="Dark|Light">Dark</button>
+  </div>
+</header>
+
+<div class="stage" id="stage">
+  <div class="floor" aria-hidden="true"></div>
+  <div class="world" id="world">
+{chr(10).join(stations)}
+  </div>
+</div>
+
+<nav class="rail" aria-label="Stations">
+  <ol>
+{dots}
+  </ol>
+</nav>
+
+<footer class="pad">
+  <button type="button" class="nav prev" aria-label="Previous station">↑</button>
+  <p class="hint">Scroll, arrow keys, or swipe. The gate opens only when you approve the plan.</p>
+  <button type="button" class="nav next" aria-label="Next station">↓</button>
+</footer>
+
+<script id="agents-md" type="text/plain">{AGENTS}</script>
+<script>window.COPY_MSG={{"agents-md":"AGENTS.md copied"}};</script>
+<script src="app.js"></script>
+<script src="level.js"></script>
+</body>
+</html>
+'''
+
+
 def page(t):
     other_href, other_label = t["other"]
     clauses = "\n".join(
@@ -240,6 +346,7 @@ def page(t):
     <button type="button" class="btn" data-copy="agents-md">{t["copy"]}</button>
     <a class="link" href="{REPO}">{t["repo"]} <svg class="ic"><use href="#ext"/></svg></a>
     <a class="link" href="{RAW}">{t["raw"]} <svg class="ic"><use href="#ext"/></svg></a>
+    <a class="link level-link" href="level.html">{ui["level"]} <svg class="ic"><use href="#ext"/></svg></a>
   </div>
   <span class="status" role="status" aria-live="polite"></span>
 </header>
@@ -333,3 +440,5 @@ def page(t):
 for t in (EN, KO):
     (ROOT / t["file"]).write_text(page(t))
     print(t["file"], len((ROOT / t["file"]).read_text()), "bytes")
+(ROOT / "level.html").write_text(level_page())
+print("level.html", len((ROOT / "level.html").read_text()), "bytes")

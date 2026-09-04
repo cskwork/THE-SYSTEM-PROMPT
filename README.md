@@ -63,3 +63,9 @@ The install section is a small configurator: tick the agents you use, pick macOS
 Windows PowerShell, and copy the generated block plus a check that every link resolves.
 `.github/workflows/check.yml` rebuilds on every push and fails if `index.html` or `ko.html`
 were not regenerated after `AGENTS.md` changed.
+
+`level.html` is the same contract as a corridor: nine stations laid along a CSS 3D
+perspective (no WebGL, no library), every word parsed from `AGENTS.md` at build time
+and kept as real DOM text, so it stays selectable and readable by assistive tech.
+Step 4 is a glass door that only opens when you approve the plan. *Flat view* lays the
+stations out in one column; it is also what narrow screens and print get.
