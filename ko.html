@@ -20,7 +20,7 @@
   <div class="grid masthead">
     <p class="meta">
       <span>AGENTS.md</span>
-      <span>3,231 bytes</span>
+      <span>3,125 bytes</span>
       <span>7단계</span>
       <span>에이전트 경로 5개</span>
     </p>
@@ -38,12 +38,11 @@
 <section id="preamble" class="sheet"><div class="grid">
   <h2>서두</h2>
   <div>
-  <p class="lead">루프가 시작되기 전, 세션 내내 걸려 있는 네 가지 규칙이다. 아래는 한국어 설명이고, 복사 버튼으로 받는 원문은 영어 파일 그대로다.</p>
+  <p class="lead">루프가 시작되기 전, 세션 내내 걸려 있는 세 가지 규칙이다. 아래는 한국어 설명이고, 복사 버튼으로 받는 원문은 영어 파일 그대로다.</p>
   <div class="rows">
     <div><p class="k">태도</p><p class="v">테스트는 도메인 모델을 검증할 뿐, 정의하지는 않는다. 데이터 손실과 공개 API, 보안, 마이그레이션에 관한 것만 묻는다. 나머지는 가정을 밝히고 그대로 진행한다. 작업은 좁게 잘라 새 컨텍스트의 서브에이전트에 넘긴다. 목표와 후보 경로, 제약, 기대 산출물을 적어 주고, 결과가 크면 파일로 받는다. 고칠 파일과 심볼을 이미 알거나 사소한 수정이면 직접 한다. worktree에서 한 작업은 끝나는 대로 병합하되, 대상 브랜치가 분명하지 않으면 물어본다.</p></div>
     <div><p class="k">주장보다 증거</p><p class="v">저장소 문서도, 주석도, 내가 하는 말도 낡는다. 돌아가는 코드나 실제 데이터, 아니면 정본에 대고 확인한다. 증거가 내 말과 어긋나면 그 증거를 들어 반박한다. 그래도 불확실하면 묻는다.</p></div>
     <div><p class="k">도메인 규칙</p><p class="v">언제나 <code>~/.agents/rules/rules.md</code>를 읽는다.</p></div>
-    <div><p class="k">글쓰기</p><p class="v">보고서와 커밋 메시지, 주석, 문서까지 모든 글에 <code>unslop</code> 스킬을 적용한다.</p></div>
   </div>
   </div>
 </div></section>
@@ -103,7 +102,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
   <p class="lead">이 파일은 하네스(에이전트를 실행하는 틀) 프롬프트를 대체하지 않고 그 위에 얹힌다. 그래서 기본 동작을 실제로 바꾸는 규칙만 담았다. 코드보다 먼저 순위 매긴 세 가지 안 내놓기, 문서가 아니라 돌아가는 코드로 주장 검증하기, 검증 출력을 통과·기존 실패·회귀·건너뜀으로 나누기, 정해진 순서로 보고하기.</p>
   <div class="rows">
     <div><p class="k">매 세션 읽는다</p><p class="v"><b><code>~/.agents/rules/rules.md</code></b> — 당신의 도메인 규칙.</p></div>
-    <div><p class="k">본문이 부르는 스킬</p><p class="v"><b><code>unslop</code>, <code>brainstorming</code>, <code>writing-plans</code></b> — 없다면 해당 문장을 지우면 된다.</p></div>
+    <div><p class="k">본문이 부르는 스킬</p><p class="v"><b><code>brainstorming</code>, <code>writing-plans</code></b> — 없다면 해당 문장을 지우면 된다.</p></div>
     <div><p class="k">있으면 읽는다</p><p class="v">저장소의 <b><code>CONTEXT.md</code></b>와 용어집, ADR.</p></div>
   </div>
   </div>
@@ -122,8 +121,6 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 **Evidence over assertion.** Repo docs, comments, and my own claims go stale. Verify against the running code, the real data, or the authoritative source. If the evidence contradicts me, challenge me and show it. If it stays uncertain, ask.
 
 **Domain rules.** Always read `~/.agents/rules/rules.md`.
-
-**Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
 
 **1. Explore.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
