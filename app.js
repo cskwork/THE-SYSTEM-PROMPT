@@ -46,3 +46,105 @@
   }, { rootMargin: '0px 0px -18% 0px' });
   io.observe(loop);
 })();
+
+(function () {
+  var loop = document.querySelector('.loop');
+  var T = window.WALK;
+  if (!loop || !T || !('open' in document.createElement('details'))) return;
+  var GATE = 4, steps = [].slice.call(loop.querySelectorAll('.step'));
+  var prog = document.querySelector('.prog'), reset = document.querySelector('.reset');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var approved = false;
+
+  steps.forEach(function (s) { if (+s.dataset.step > GATE) s.classList.add('locked'); });
+
+  function details(s) { return s.querySelector('.xd'); }
+  function stepOf(el) { return el.closest('.step'); }
+  function setCurrent(s) {
+    steps.forEach(function (x) { x.classList.toggle('current', x === s); });
+    if (!s) { prog.innerHTML = ''; return; }
+    var n = +s.dataset.step, name = s.dataset.name;
+    var line = T.prog.replace('{n}', n).replace('{name}', name), note = '';
+    if (approved) note = '<span>' + T.approved + '</span>';
+    else if (n === GATE) note = '<span class="wait">' + (s.classList.contains('hint') ? T.hint : T.waiting) + '</span>';
+    prog.innerHTML = '<b>' + line + '</b>' + note;
+  }
+  function openStep(s, scroll) {
+    var d = details(s);
+    if (!d.open) d.open = true;
+    setCurrent(s);
+    if (scroll) s.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+  }
+  // exclusive accordion for browsers without <details name>
+  loop.addEventListener('toggle', function (e) {
+    var d = e.target; if (!d.classList.contains('xd')) return;
+    if (d.open) {
+      loop.querySelectorAll('.xd[open]').forEach(function (o) { if (o !== d) o.open = false; });
+      setCurrent(stepOf(d));
+    } else if (stepOf(d).classList.contains('current')) setCurrent(null);
+  }, true);
+  // locked steps route the reader to the gate
+  loop.addEventListener('click', function (e) {
+    var sum = e.target.closest('summary'); if (!sum) return;
+    var d = sum.parentElement, s = stepOf(d);
+    if (d.classList.contains('locked') && !approved) {
+      e.preventDefault();
+      var gate = steps[GATE - 1];
+      openStep(gate, true);
+      gate.classList.add('hint');
+      setCurrent(gate);
+      setTimeout(function () { gate.querySelector('.approve').focus({ preventScroll: true }); }, 60);
+    }
+  });
+  loop.addEventListener('click', function (e) {
+    var b = e.target.closest('.approve'); if (!b) return;
+    approved = true;
+    loop.classList.add('approved');
+    steps[GATE - 1].classList.remove('hint');
+    steps.forEach(function (s) {
+      if (+s.dataset.step > GATE) {
+        s.classList.remove('locked');
+        var d = details(s); d.classList.remove('locked'); d.removeAttribute('aria-disabled');
+        d.querySelector('summary').lastChild.textContent = T.see;
+      }
+    });
+    b.disabled = true;
+    reset.hidden = false;
+    prog.innerHTML = '<b>' + T.approved + '</b>';
+    var rest = steps.slice(GATE), i = 0;
+    (function next() {
+      if (i >= rest.length) return;
+      openStep(rest[i], true); i++;
+      if (reduced) { if (i < rest.length) next(); }
+      else setTimeout(next, 1400);
+    })();
+  });
+  reset.addEventListener('click', function () {
+    approved = false;
+    loop.classList.remove('approved');
+    loop.querySelectorAll('.xd[open]').forEach(function (o) { o.open = false; });
+    steps.forEach(function (s) {
+      s.classList.remove('hint', 'current');
+      if (+s.dataset.step > GATE) {
+        s.classList.add('locked');
+        var d = details(s); d.classList.add('locked'); d.setAttribute('aria-disabled', 'true');
+        d.querySelector('summary').lastChild.textContent = T.locked || d.querySelector('summary').lastChild.textContent;
+      }
+    });
+    loop.querySelector('.approve').disabled = false;
+    reset.hidden = true;
+    setCurrent(null);
+    steps[0].querySelector('summary').focus();
+  });
+  // arrow keys walk the summaries; Home/End jump
+  loop.addEventListener('keydown', function (e) {
+    var sum = e.target.closest('summary'); if (!sum) return;
+    var sums = [].slice.call(loop.querySelectorAll('summary')), i = sums.indexOf(sum), to = null;
+    if (e.key === 'ArrowDown' || e.key === 'j') to = sums[i + 1];
+    else if (e.key === 'ArrowUp' || e.key === 'k') to = sums[i - 1];
+    else if (e.key === 'Home') to = sums[0];
+    else if (e.key === 'End') to = sums[sums.length - 1];
+    if (to) { e.preventDefault(); to.focus(); }
+  });
+  window.WALK.locked = T.locked;
+})();

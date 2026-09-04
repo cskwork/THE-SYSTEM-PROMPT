@@ -116,19 +116,84 @@ KO = dict(EN, **{
 })
 
 
+# ---- walkthrough: one made-up bug, followed through all seven steps ----
+UI = {
+  "en": {"illus": "Open a step to watch it on a made-up bug: password-reset links that come back as “Invalid token”. The exchanges are illustrative, not transcripts.",
+         "see": "Watch this step", "locked": "Waits for approval", "approve": "Approve the plan",
+         "approved": "Plan approved. Steps 5 to 7 run unattended.", "reset": "Start over",
+         "you": "you", "agent": "agent", "prog": "Step {n} of 7 · {name}", "waiting": "waiting for your approval",
+         "hint": "Approve the plan first."},
+  "ko": {"illus": "단계를 열면 가상의 버그 하나를 끝까지 따라갑니다. 비밀번호 재설정 링크가 “Invalid token”으로 튕기는 문제입니다. 대화는 예시이지 실제 기록이 아닙니다.",
+         "see": "이 단계 보기", "locked": "승인을 기다린다", "approve": "계획 승인",
+         "approved": "계획이 승인됐다. 5~7단계는 사람 없이 진행된다.", "reset": "처음부터",
+         "you": "나", "agent": "에이전트", "prog": "7단계 중 {n} · {name}", "waiting": "승인 대기 중",
+         "hint": "먼저 계획을 승인해야 한다."},
+}
+
+XC = {
+  "en": [
+    [("agent", "Read <code>CONTRIBUTING.md</code>, the <code>auth/</code> module, and the reset-token table. Real rows: <code>expires_at</code> is stored in UTC; <code>TokenService#verify</code> compares it against local time. Callers: <code>ResetController#confirm</code> only. The real check is <code>npm test -- auth</code>.")],
+    [("agent", "Restating: after a password reset, the fresh link is rejected as “Invalid token”. One customer hit it 14 times this week [verified: support log #4821]. Done means a fresh link logs the user in, and a test proves it. You opened with “extend the token TTL”. Which problem does that solve, the expiry maths or the copy?"),
+     ("you", "The expiry maths. TTL is fine.")],
+    [("agent", "1. Compare in UTC inside <code>verify()</code>. One line; risk: another caller assumes local time [verified: one caller]. 2. Store <code>expires_at</code> as an epoch integer. Fixes it for good; needs a migration. 3. Normalise the clock at the API edge. Hides the bug, does not remove it. Recommend 1: the smallest change at the real cause."),
+     ("you", "1.")],
+    [("agent", "bugfix · fresh reset links log the user in · <code>auth/token_service.ts</code>, <code>auth/token_service.test.ts</code> · contract: <code>verify()</code> keeps its signature and its behaviour for valid tokens · verification: a failing repro test, then <code>npm test -- auth</code> · assumes: the server clock is UTC. Must not change: the token format.")],
+    [("agent", "Wrote <em>rejects a fresh token when the server clock is ahead</em>. It fails. Switched the comparison to <code>Date.now()</code> against <code>expires_at.getTime()</code>. It passes. Deleted the <code>localOffset</code> helper the fix made unused; left <code>legacyVerify</code> in place and noted it.")],
+    [("agent", "<code>npm test -- auth</code>: 41 passed. Regressions: none. Pre-existing: <code>session.test.ts</code> is skipped, and was before. Environment limit: no staging box with a skewed clock, so the repro test simulates the skew.")],
+    [("agent", "Context: reset links were rejected as expired. Changed: (1) <code>verify()</code> compares in UTC. Untouched: token format, TTL, <code>legacyVerify</code>. Status: fixed, tests green. Next for you: deploy and watch the reset-failure metric for a day. Open question: keep <code>legacyVerify</code>, or remove it in a follow-up?")],
+  ],
+  "ko": [
+    [("agent", "<code>CONTRIBUTING.md</code>, <code>auth/</code> 모듈, 재설정 토큰 테이블을 읽었다. 실제 행을 보니 <code>expires_at</code>은 UTC로 저장되는데 <code>TokenService#verify</code>는 로컬 시간과 비교한다. 호출자는 <code>ResetController#confirm</code> 하나. 실제 검증 명령은 <code>npm test -- auth</code>.")],
+    [("agent", "다시 말하면: 비밀번호를 재설정한 뒤 새 링크가 “Invalid token”으로 거부된다. 한 고객이 이번 주에만 14번 겪었다 [verified: 지원 로그 #4821]. 완료란 새 링크로 로그인이 되고, 그것을 테스트가 증명하는 상태다. “토큰 TTL을 늘리자”로 시작하셨는데, 그건 만료 계산 문제를 푸는 건가요, 문구 문제를 푸는 건가요?"),
+     ("you", "만료 계산. TTL은 그대로.")],
+    [("agent", "1. <code>verify()</code> 안에서 UTC로 비교. 한 줄. 위험: 다른 호출자가 로컬 시간을 가정할 수 있다 [verified: 호출자 1곳]. 2. <code>expires_at</code>을 epoch 정수로 저장. 근본 해결이지만 마이그레이션 필요. 3. API 경계에서 시계를 맞춤. 버그를 가릴 뿐 없애지 않는다. 1을 추천: 원인 자리에서 가장 작은 변경."),
+     ("you", "1.")],
+    [("agent", "bugfix · 새 재설정 링크로 로그인된다 · <code>auth/token_service.ts</code>, <code>auth/token_service.test.ts</code> · 계약: <code>verify()</code>의 시그니처와 유효 토큰에 대한 동작은 그대로 · 검증: 실패하는 재현 테스트, 그다음 <code>npm test -- auth</code> · 가정: 서버 시계는 UTC. 바뀌면 안 되는 것: 토큰 형식.")],
+    [("agent", "<em>서버 시계가 앞서 있으면 새 토큰을 거부한다</em> 테스트를 썼다. 실패한다. 비교를 <code>Date.now()</code> 대 <code>expires_at.getTime()</code>으로 바꿨다. 통과한다. 이 수정으로 쓰이지 않게 된 <code>localOffset</code> 헬퍼는 지웠고, <code>legacyVerify</code>는 그대로 두고 언급했다.")],
+    [("agent", "<code>npm test -- auth</code>: 41개 통과. 회귀: 없음. 기존 실패: <code>session.test.ts</code>가 건너뛰기 상태인데 원래부터 그랬다. 환경 제약: 시계가 어긋난 스테이징이 없어서 재현 테스트가 어긋남을 흉내 낸다.")],
+    [("agent", "맥락: 재설정 링크가 만료된 것으로 거부됐다. 바뀐 것: (1) <code>verify()</code>가 UTC로 비교한다. 손대지 않은 것: 토큰 형식, TTL, <code>legacyVerify</code>. 상태: 수정 완료, 테스트 통과. 다음에 하실 일: 배포 후 하루 동안 재설정 실패 지표를 지켜본다. 열린 질문: <code>legacyVerify</code>를 둘까요, 후속 작업에서 지울까요?")],
+  ],
+}
+
+
+def loop_markup(t):
+    ui, xc = UI[t["lang"]], XC[t["lang"]]
+    out = []
+    for i, (name, body) in enumerate(t["steps"], 1):
+        cls = "step gate" if i == GATE else ("step after" if i > GATE else "step")
+        plain = name.split("<")[0].strip()
+        lines = "\n".join(
+            '          <li class="%s"><span class="who">%s</span><p>%s</p></li>' % (who, ui[who], text)
+            for who, text in xc[i - 1])
+        locked = i > GATE
+        dcls = "xd locked" if locked else "xd"
+        dis = ' aria-disabled="true"' if locked else ""
+        summary = ui["locked"] if locked else ui["see"]
+        approve = '\n        <button type="button" class="btn approve">%s</button>' % ui["approve"] if i == GATE else ""
+        mark = '\n      <p class="mark">%s</p>' % t["gate"] if i == GATE else ""
+        out.append('''    <li class="%s" data-step="%d" data-name="%s"><span class="n">%d</span>
+      <h3>%s</h3>
+      <p>%s</p>
+      <details class="%s" name="loop"%s>
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>%s</summary>
+        <ol class="xc">
+%s
+        </ol>%s
+      </details>%s
+    </li>''' % (cls, i, plain, i, name, body, dcls, dis, summary, lines, approve, mark))
+        if i == GATE:
+            out.append('    <li class="after divider" aria-hidden="true"><p class="unattended">%s</p></li>' % t["unattended"])
+    return "\n".join(out)
+
+
 def page(t):
     other_href, other_label = t["other"]
     clauses = "\n".join(
         f'    <div><p class="k">{k}</p><p class="v">{v}</p></div>' for k, v in t["clauses"])
     expects = "\n".join(
         f'    <div><p class="k">{k}</p><p class="v">{v}</p></div>' for k, v in t["expects"])
-    steps = []
-    for i, (name, body) in enumerate(t["steps"], 1):
-        cls = ' class="gate"' if i == GATE else (' class="after"' if i > GATE else "")
-        mark = f'<p class="mark">{t["gate"]}</p>' if i == GATE else ""
-        steps.append(f'    <li{cls}><span class="n">{i}</span><h3>{name}</h3><p>{body}</p>{mark}</li>')
-        if i == GATE:
-            steps.append(f'    <li class="after divider" aria-hidden="true"><p class="unattended">{t["unattended"]}</p></li>')
+    steps = loop_markup(t)
+    ui = UI[t["lang"]]
     rows = "\n".join(f'        <tr><td>{a}</td><td><code>{b}</code></td></tr>' for a, b in PATHS)
     meta = "\n".join(f'      <span>{m}</span>' for m in t["meta"])
     return f'''<!DOCTYPE html>
@@ -145,7 +210,7 @@ def page(t):
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol></svg>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol><symbol id="chev" viewBox="0 0 12 12"><path d="M3 4.5 6 7.5l3-3"/></symbol></svg>
 
 <header class="sheet">
   <nav class="lang"><a href="{t["file"]}" aria-current="page">{t["self"]}</a><a href="{other_href}">{other_label}</a></nav>
@@ -176,11 +241,12 @@ def page(t):
 </div></section>
 
 <section id="loop" class="sheet"><div class="grid">
-  <h2>{t["s2"]}</h2>
+  <div class="head"><h2>{t["s2"]}</h2><p class="prog" role="status" aria-live="polite"></p><button type="button" class="reset" hidden>{ui["reset"]}</button></div>
   <div>
   <p class="lead">{t["s2lead"]}</p>
+  <p class="illus">{ui["illus"]}</p>
   <ol class="loop anim">
-{chr(10).join(steps)}
+{steps}
   </ol>
   </div>
 </div></section>
@@ -222,7 +288,7 @@ def page(t):
 </div></footer>
 
 <script id="agents-md" type="text/plain">{AGENTS}</script>
-<script>window.COPY_MSG={{"agents-md":"{t["statusmsg"][0]}","install-block":"{t["statusmsg"][1]}"}};</script>
+<script>window.COPY_MSG={{"agents-md":"{t["statusmsg"][0]}","install-block":"{t["statusmsg"][1]}"}};window.WALK={{"prog":"{ui["prog"]}","waiting":"{ui["waiting"]}","approved":"{ui["approved"]}","hint":"{ui["hint"]}","see":"{ui["see"]}","locked":"{ui["locked"]}"}};</script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol></svg>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><symbol id="ext" viewBox="0 0 12 12"><path d="M4 2h6v8"/><path d="M10 2 2.5 9.5"/></symbol><symbol id="chev" viewBox="0 0 12 12"><path d="M3 4.5 6 7.5l3-3"/></symbol></svg>
 
 <header class="sheet">
   <nav class="lang"><a href="index.html" aria-current="page">EN</a><a href="ko.html">한국어</a></nav>
@@ -48,18 +48,86 @@
 </div></section>
 
 <section id="loop" class="sheet"><div class="grid">
-  <h2>The seven-step loop</h2>
+  <div class="head"><h2>The seven-step loop</h2><p class="prog" role="status" aria-live="polite"></p><button type="button" class="reset" hidden>Start over</button></div>
   <div>
   <p class="lead">Explore to report. Step four is the only place the agent stops for a human.</p>
+  <p class="illus">Open a step to watch it on a made-up bug: password-reset links that come back as “Invalid token”. The exchanges are illustrative, not transcripts.</p>
   <ol class="loop anim">
-    <li><span class="n">1</span><h3>Explore</h3><p>Read the repository instructions, domain model, and real data shapes; tests verify that model, they do not define it. Then read the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p></li>
-    <li><span class="n">2</span><h3>Intent</h3><p>Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p></li>
-    <li><span class="n">3</span><h3>Options</h3><p>Give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one.</p></li>
-    <li class="gate"><span class="n">4</span><h3>Plan</h3><p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p><p class="mark">Last human gate</p></li>
+    <li class="step" data-step="1" data-name="Explore"><span class="n">1</span>
+      <h3>Explore</h3>
+      <p>Read the repository instructions, domain model, and real data shapes; tests verify that model, they do not define it. Then read the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p>
+      <details class="xd" name="loop">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Watch this step</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>Read <code>CONTRIBUTING.md</code>, the <code>auth/</code> module, and the reset-token table. Real rows: <code>expires_at</code> is stored in UTC; <code>TokenService#verify</code> compares it against local time. Callers: <code>ResetController#confirm</code> only. The real check is <code>npm test -- auth</code>.</p></li>
+        </ol>
+      </details>
+    </li>
+    <li class="step" data-step="2" data-name="Intent"><span class="n">2</span>
+      <h3>Intent</h3>
+      <p>Restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p>
+      <details class="xd" name="loop">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Watch this step</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>Restating: after a password reset, the fresh link is rejected as “Invalid token”. One customer hit it 14 times this week [verified: support log #4821]. Done means a fresh link logs the user in, and a test proves it. You opened with “extend the token TTL”. Which problem does that solve, the expiry maths or the copy?</p></li>
+          <li class="you"><span class="who">you</span><p>The expiry maths. TTL is fine.</p></li>
+        </ol>
+      </details>
+    </li>
+    <li class="step" data-step="3" data-name="Options"><span class="n">3</span>
+      <h3>Options</h3>
+      <p>Give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one.</p>
+      <details class="xd" name="loop">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Watch this step</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>1. Compare in UTC inside <code>verify()</code>. One line; risk: another caller assumes local time [verified: one caller]. 2. Store <code>expires_at</code> as an epoch integer. Fixes it for good; needs a migration. 3. Normalise the clock at the API edge. Hides the bug, does not remove it. Recommend 1: the smallest change at the real cause.</p></li>
+          <li class="you"><span class="who">you</span><p>1.</p></li>
+        </ol>
+      </details>
+    </li>
+    <li class="step gate" data-step="4" data-name="Plan"><span class="n">4</span>
+      <h3>Plan</h3>
+      <p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p>
+      <details class="xd" name="loop">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Watch this step</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>bugfix · fresh reset links log the user in · <code>auth/token_service.ts</code>, <code>auth/token_service.test.ts</code> · contract: <code>verify()</code> keeps its signature and its behaviour for valid tokens · verification: a failing repro test, then <code>npm test -- auth</code> · assumes: the server clock is UTC. Must not change: the token format.</p></li>
+        </ol>
+        <button type="button" class="btn approve">Approve the plan</button>
+      </details>
+      <p class="mark">Last human gate</p>
+    </li>
     <li class="after divider" aria-hidden="true"><p class="unattended">unattended from here</p></li>
-    <li class="after"><span class="n">5</span><h3>Execute</h3><p>Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.</p></li>
-    <li class="after"><span class="n">6</span><h3>Evidence</h3><p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p></li>
-    <li class="after"><span class="n">7</span><h3>Report</h3><p>Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p></li>
+    <li class="step after" data-step="5" data-name="Execute"><span class="n">5</span>
+      <h3>Execute</h3>
+      <p>Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.</p>
+      <details class="xd locked" name="loop" aria-disabled="true">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Waits for approval</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>Wrote <em>rejects a fresh token when the server clock is ahead</em>. It fails. Switched the comparison to <code>Date.now()</code> against <code>expires_at.getTime()</code>. It passes. Deleted the <code>localOffset</code> helper the fix made unused; left <code>legacyVerify</code> in place and noted it.</p></li>
+        </ol>
+      </details>
+    </li>
+    <li class="step after" data-step="6" data-name="Evidence"><span class="n">6</span>
+      <h3>Evidence</h3>
+      <p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p>
+      <details class="xd locked" name="loop" aria-disabled="true">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Waits for approval</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p><code>npm test -- auth</code>: 41 passed. Regressions: none. Pre-existing: <code>session.test.ts</code> is skipped, and was before. Environment limit: no staging box with a skewed clock, so the repro test simulates the skew.</p></li>
+        </ol>
+      </details>
+    </li>
+    <li class="step after" data-step="7" data-name="Report"><span class="n">7</span>
+      <h3>Report</h3>
+      <p>Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p>
+      <details class="xd locked" name="loop" aria-disabled="true">
+        <summary><svg class="ic chev" aria-hidden="true"><use href="#chev"/></svg>Waits for approval</summary>
+        <ol class="xc">
+          <li class="agent"><span class="who">agent</span><p>Context: reset links were rejected as expired. Changed: (1) <code>verify()</code> compares in UTC. Untouched: token format, TTL, <code>legacyVerify</code>. Status: fixed, tests green. Next for you: deploy and watch the reset-failure metric for a day. Open question: keep <code>legacyVerify</code>, or remove it in a follow-up?</p></li>
+        </ol>
+      </details>
+    </li>
   </ol>
   </div>
 </div></section>
@@ -136,7 +204,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 **7. Report.** Simplified Plain Language: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
-<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};</script>
+<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};window.WALK={"prog":"Step {n} of 7 · {name}","waiting":"waiting for your approval","approved":"Plan approved. Steps 5 to 7 run unattended.","hint":"Approve the plan first.","see":"Watch this step","locked":"Waits for approval"};</script>
 <script src="app.js"></script>
 </body>
 </html>

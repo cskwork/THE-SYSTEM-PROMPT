@@ -53,3 +53,8 @@ python3 build.py    # rewrites index.html and ko.html from AGENTS.md
 
 The copy button on each page ships `AGENTS.md` verbatim, so run the build after editing the
 contract or the two pages will quote a file that no longer exists.
+
+Each step on the page opens onto a made-up bug (reset links rejected as "Invalid token")
+followed through the whole loop. Steps 5 to 7 stay locked until you press *Approve the plan*
+at step 4, which is the point of the contract. The exchanges live in `build.py` under `XC`
+and are illustrative, not transcripts.
