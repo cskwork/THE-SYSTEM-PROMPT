@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>THE-SYSTEM-PROMPT — the operating contract for every coding agent</title>
-<meta name="description" content="One file, AGENTS.md: a stance, an evidence rule, and an eight-step loop from orient to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
+<meta name="description" content="One file, AGENTS.md: a stance, an evidence rule, and an eight-step loop from explore to report. Symlink it into Claude Code, Codex CLI, Gemini CLI, OpenCode, and pi.">
 <meta name="color-scheme" content="light dark">
 <link rel="alternate" hreflang="en" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
 <link rel="alternate" hreflang="ko" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html">
@@ -24,7 +24,7 @@
       <span>8 steps</span>
       <span>5 agent paths</span>
     </p>
-    <p class="lede">The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and an eight-step loop from orient to report.</p>
+    <p class="lede">The operating contract I hand every coding agent. <b>One file, <code>AGENTS.md</code></b>: a stance, an evidence rule, and an eight-step loop from explore to report.</p>
   </div>
   <div class="acts">
     <button type="button" class="btn" data-copy="agents-md">Copy the contract</button>
@@ -51,16 +51,16 @@
 <section id="loop" class="sheet"><div class="grid">
   <h2>The eight-step loop</h2>
   <div>
-  <p class="lead">Orient to report. Step five is the only place the agent stops for a human.</p>
+  <p class="lead">Explore to report. Step five is the only place the agent stops for a human.</p>
   <ol class="loop anim">
-    <li><span class="n">1</span><h3>Orient</h3><p>Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p></li>
+    <li><span class="n">1</span><h3>Explore</h3><p>Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.</p></li>
     <li><span class="n">2</span><h3>Intent</h3><p>Before options or code, restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with <code>brainstorming</code>, five at most. Label each claim <code>verified: how</code> or <code>assumed: why</code>, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.</p></li>
     <li><span class="n">3</span><h3>Options</h3><p>Before any plan or code, give exactly three approaches that differ in strategy, one line each: approach, main tradeoff, cost or risk. Rank them, give one reason for the top pick, then stop and ask me to choose. Each option must cite evidence that it can actually work. Skip only when one approach is clearly the only reasonable one.</p></li>
     <li><span class="n">4</span><h3>Delegate</h3><p>Send narrow tasks to fresh-context subagents. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.</p></li>
-    <li class="gate"><span class="n">5</span><h3>Plan</h3><p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.</p><p class="mark">Last human gate</p></li>
+    <li class="gate"><span class="n">5</span><h3>Plan</h3><p>State <code>task type · goal · files · contracts · verification · assumptions</code>, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with <code>writing-plans</code>. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.</p><p class="mark">Last human gate</p></li>
     <li class="after divider" aria-hidden="true"><p class="unattended">unattended from here</p></li>
     <li class="after"><span class="n">6</span><h3>Execute</h3><p>Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.</p></li>
-    <li class="after"><span class="n">7</span><h3>Verify</h3><p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p></li>
+    <li class="after"><span class="n">7</span><h3>Evidence</h3><p>Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.</p></li>
     <li class="after"><span class="n">8</span><h3>Report</h3><p>Simplified Technical English: one idea per sentence, every term defined. Use the project's language from <code>CONTEXT.md</code>, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.</p></li>
   </ol>
   </div>
@@ -126,7 +126,7 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 **Writing.** Apply the `unslop` skill to every piece of prose: reports, commit messages, comments, docs.
 
-**1. Orient.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
+**1. Explore.** Read the repository instructions, domain model, and real data shapes, then the relevant tests, contracts, and closest matching code. Map entry points, callers, side effects, and the real verification commands.
 
 **2. Intent.** Before options or code, restate in one sentence what I want, who hits the problem, and what observable check means done. If I led with a solution, ask what problem it solves. Ask one question at a time with `brainstorming`, five at most. Label each claim `verified: how` or `assumed: why`, mine included. Still fuzzy after five? List what is decided and what is open, then take the top open item instead of guessing.
 
@@ -134,11 +134,11 @@ ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
 
 **4. Delegate.** Send narrow tasks to fresh-context subagents. Each task states goal, candidate paths, constraints, and expected output. Return large results as files, verified independently. Skip when you know the exact file and symbol, or the change is one trivial edit.
 
-**5. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with `writing-plans`. Plan confirmation is the last human gate. After it, review, execute, verify, and report autonomously.
+**5. Plan.** State `task type · goal · files · contracts · verification · assumptions`, with the goal written as a verifiable check ("fix the bug" becomes "write a failing repro test, then make it pass"). Name what must not change. Record the plan with `writing-plans`. Plan confirmation is the last human gate. After it, review, execute, gather evidence, and report autonomously.
 
 **6. Execute.** Follow the plan. If reality differs, run the planning gate again. Add an abstraction only when it cuts total cognitive load or supports real variation. Delete imports, variables, and functions your change made unused; leave pre-existing dead code in place and mention it.
 
-**7. Verify.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
+**7. Evidence.** Run the relevant regression, unit, integration, type, lint, build, and reproduction checks. Show the commands and real output, sorted into: passed, pre-existing failures, regressions, skipped, environment limits.
 
 **8. Report.** Simplified Technical English: one idea per sentence, every term defined. Use the project's language from `CONTEXT.md`, the glossary, and ADRs; flag any term that differs from the code. Sections in order: context, what changed, what stayed untouched, status. Number behavior changes; do not group them by file. State what I must do next. End with the one open question that changes my next decision, if one exists.
 </script>
