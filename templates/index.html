@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE-SYSTEM-PROMPT · Intent, outcomes, boundaries</title>
+<meta name="description" content="A shared AGENTS.md for coding agents. Define the outcome and boundaries. Let the agent choose how to get there.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="THE-SYSTEM-PROMPT">
+<meta property="og:description" content="A shared AGENTS.md for coding agents. Define the outcome and boundaries. Let the agent choose how to get there.">
+<meta property="og:url" content="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" hreflang="en" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/">
+<link rel="alternate" hreflang="ko" href="https://cskwork.github.io/THE-SYSTEM-PROMPT/ko.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2315171c'/><path d='M10 7v18M16 7v18' stroke='%23fbfaf7' stroke-width='2'/><path d='M7 16h18' stroke='%23c0392b' stroke-width='2'/></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="sheet">
+<nav class="lang" aria-label="Language and appearance"><a href="ko.html">한국어</a><a href="#install">Install</a><a href="https://github.com/cskwork/THE-SYSTEM-PROMPT">GitHub</a><button class="theme" hidden data-labels="Dark|Light">Theme</button></nav>
+<h1>Understand the intent.<br>Agree on the outcome.</h1><p class="lede">A shared AGENTS.md for coding agents. Define the outcome and boundaries. Let the agent choose how to get there.</p>
+<div class="acts"><button class="btn" data-copy="agents-md">Copy AGENTS.md</button><a href="#contract">Read the prompt</a></div><span class="status" role="status" aria-live="polite"></span>
+</header><main>
+<section class="sheet"><div class="grid"><h2>What matters</h2><div class="rows"><div><h3>Intent before procedure</h3><p class="v">Understand what the user wants to accomplish. Use context to resolve ambiguity without inventing a larger project.</p></div><div><h3>Judgment within boundaries</h3><p class="v">Agree on scope before implementation. Then work autonomously, returning when the agreement or risk materially changes.</p></div><div><h3>Evidence before completion</h3><p class="v">Check relevant code and real data. Verify the intended behavior and explain what remains uncertain.</p></div></div></div></section>
+<section class="sheet" id="contract"><div class="grid"><h2>The prompt</h2><div><p class="lead">The complete operating instructions. Both language editions copy this exact English file.</p><div class="contract">@@PARAGRAPHS@@</div><a href="AGENTS.md" download>Download AGENTS.md</a></div></div></section>
+<section id="install" class="sheet"><div class="grid">
+  <h2>Install</h2>
+  <div>
+  <p class="lead">Keep one canonical copy and link it into each agent's config directory.</p>
+  <form class="cfg" hidden>
+    <fieldset><legend>Agents you use</legend>
+      <label><input type="checkbox" name="agent" value="claude" checked> Claude Code</label>
+      <label><input type="checkbox" name="agent" value="codex" checked> Codex CLI</label>
+      <label><input type="checkbox" name="agent" value="gemini" checked> Gemini CLI</label>
+      <label><input type="checkbox" name="agent" value="opencode" checked> OpenCode</label>
+      <label><input type="checkbox" name="agent" value="pi" checked> pi</label>
+      <label><input type="checkbox" name="agent" value="repo"> Per-repo (Cursor, Windsurf, Antigravity)</label>
+    </fieldset>
+    <fieldset><legend>Shell</legend>
+      <label><input type="radio" name="shell" value="unix" checked> macOS / Linux</label>
+      <label><input type="radio" name="shell" value="win"> Windows PowerShell</label>
+    </fieldset>
+  </form>
+  <pre id="install-block"><code>mkdir -p ~/.agents
+curl -fsSL <span class="u">https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md</span> \
+  -o ~/.agents/AGENTS.md
+
+ln -sfn ~/.agents/AGENTS.md ~/.claude/CLAUDE.md
+ln -sfn ~/.agents/AGENTS.md ~/.codex/AGENTS.md
+ln -sfn ~/.agents/AGENTS.md ~/.gemini/GEMINI.md            <span class="c"># Gemini CLI reads GEMINI.md</span>
+ln -sfn ~/.agents/AGENTS.md ~/.config/opencode/AGENTS.md
+ln -sfn ~/.agents/AGENTS.md ~/.pi/agent/AGENTS.md</code></pre>
+  <div class="acts">
+    <button type="button" class="btn" data-copy="install-block">Copy the install block</button>
+  </div>
+  <span class="status" role="status" aria-live="polite"></span>
+  <div class="verify" hidden>
+    <p class="k">Then confirm every link resolves</p>
+    <pre id="verify-block"><code></code></pre>
+    <div class="acts"><button type="button" class="btn" data-copy="verify-block">Copy the check</button></div>
+    <span class="status" role="status" aria-live="polite"></span>
+  </div>
+  <table>
+    <caption>Where each agent reads it</caption>
+    <thead><tr><th scope="col">Agent</th><th scope="col">Path it loads</th></tr></thead>
+    <tbody>
+        <tr><td>Claude Code</td><td><code>~/.claude/CLAUDE.md</code></td></tr>
+        <tr><td>Codex CLI</td><td><code>~/.codex/AGENTS.md</code></td></tr>
+        <tr><td>Gemini CLI</td><td><code>~/.gemini/GEMINI.md</code></td></tr>
+        <tr><td>OpenCode</td><td><code>~/.config/opencode/AGENTS.md</code></td></tr>
+        <tr><td>pi</td><td><code>~/.pi/agent/AGENTS.md</code></td></tr>
+    </tbody>
+  </table>
+  <p class="caveat"><b>Before you run it</b>Move any target that is a regular file to a timestamped backup before you replace it. Skip the directories whose agent you have not installed. On Windows, symlinks need Developer Mode or an admin terminal; copy the file instead and expect it to drift.</p>
+  </div>
+</div></section>
+
+
+<section class="sheet" id="history"><div class="grid"><h2>Why it changed</h2><div><p>The previous version prescribed seven steps, three options, claim labels, and a fixed plan format. This version keeps intent, agreement, scope, and evidence explicit while leaving the method to the agent. Better performance has not been demonstrated by a comparative evaluation.</p><p class="history-links"><a href="archive/AGENTS-2026-09-06-seven-step.md">Previous AGENTS.md</a> · <a href="archive/index.html">Previous landing page</a></p></div></div></section>
+</main><footer class="sheet"><a href="https://github.com/cskwork/THE-SYSTEM-PROMPT">THE-SYSTEM-PROMPT</a><p>Intent, outcomes, boundaries. The method follows the task.</p></footer>
+<script id="agents-md" type="text/plain">@@CONTRACT@@</script>
+<script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};window.CFG={"gemini":"# Gemini CLI reads GEMINI.md","wincopy":"# Windows: copy instead of link; rerun after each update"};</script><script src="app.js"></script></body></html>
