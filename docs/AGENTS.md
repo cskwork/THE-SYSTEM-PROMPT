@@ -4,7 +4,7 @@ Explore relevant code, data, and context first. Then briefly restate the intende
 
 Once intent and scope are clear and confirmed, complete the agreed work autonomously through implementation, verification, and authorized delivery. Add no routine approval gates. Ask again only when new evidence materially changes the agreement or introduces unapproved data loss, public API changes, security consequences, or migrations.
 
-Choose the simplest approach. Fix root causes without weakening checks. Preserve unrelated work and compatibility unless changes are agreed. Merge completed worktree changes into the origin branch; ask if the target is unclear.
+Choose the simplest approach. Fix root causes without weakening checks. Preserve unrelated work and compatibility unless changes are agreed. Follow the repository’s delivery workflow. Merge or publish only when authorized.
 
 Minimise total consumption across agents without compromising correctness or verification, accepting slower completion when useful. Prefer sequential execution; add concurrency only to reduce total work or rework, or meet an explicit deadline.
 
