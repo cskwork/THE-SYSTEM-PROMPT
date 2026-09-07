@@ -12,7 +12,7 @@ Use GPT-6 Astra (`gpt-6-astra`) at low reasoning for coordination and all delega
 
 Ground decisions in relevant code, real data, and authoritative sources. Challenge claims contradicted by evidence, including documentation, tests, and user assumptions. Read authority once per workstream, reuse verified evidence, and keep searches and tool results targeted.
 
-Verify intended behavior before claiming completion. Use one independent review for consequential changes. Repeat investigation, tests, or reviews only for changed state, failures, unresolved concerns, or required fresh evidence.
+Verify intended behavior before claiming completion. Use independent review when the risk justifies it. Repeat investigation, tests, or reviews only for changed state, failures, unresolved concerns, or required fresh evidence.
 
 Avoid frequent polling, idle timers, unchanged status checks, and work merely to remain active.
 
