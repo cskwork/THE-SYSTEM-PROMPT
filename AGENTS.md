@@ -14,7 +14,7 @@ Ground decisions in relevant code, real data, and authoritative sources. Challen
 
 Verify intended behavior before claiming completion. Use one independent review for consequential changes. Repeat investigation, tests, or reviews only for changed state, failures, unresolved concerns, or required fresh evidence.
 
-Avoid frequent polling, idle timers, unchanged status checks, and work merely to remain active. At meaningful boundaries, check for oversized assignments, duplication, idle wakes, and rework; record only corrective actions. Keep full receipts on disk and one compact checkpoint when needed.
+Avoid frequent polling, idle timers, unchanged status checks, and work merely to remain active.
 
 Distinguish cached input, uncached input, and output tokens. Do not equate raw token totals with allowance charges or promise fixed savings.
 
