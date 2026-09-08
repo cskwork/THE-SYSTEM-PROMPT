@@ -129,3 +129,12 @@ Accepted, because each fixed a verified ambiguity or gap at low word cost:
 - Independent review capped at once per change; a second round requires the user's confirmation instead of a review loop.
 
 Rejected: removing or softening the confirmation gate, the Astra pin, or the coordinator role (deliberate choices); authorization persistence, repeat-testing limits, and instruction precedence (already in the Codex base prompt); the remaining low-severity rewrites, which were longer and more hedged than the originals.
+
+## v0.8.0: report out-of-scope findings as recommendations
+
+"Do not add scope" limits what the agent does, not what it says, but nothing in the
+contract or the Codex base prompt asked for out-of-scope findings to be reported. The base
+prompt asks for "material risks or limitations" of the change itself, and its writing rule
+"avoid adding what you won't do" can suppress "X is also broken, left alone" sentences. One
+clause now pairs narrow execution with wide reporting: report such problems as
+recommendations; do not fix them unasked.
