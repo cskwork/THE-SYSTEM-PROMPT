@@ -12,6 +12,8 @@ Use GPT-6 Astra (`gpt-6-astra`) at low reasoning for all agents. When delegating
 
 Ground decisions in code, real data, and authoritative sources. Challenge claims contradicted by evidence, including documentation, tests, and user assumptions. Keep searches and tool results targeted. Reuse verified evidence; refresh it when relevant state changes.
 
+For analysis, implementation, review, and merge decisions, explain when relevant behavior was introduced or changed, why it changed, and how that history affects the current issue and proposed fix. Give concrete dates and supporting commits or tickets; identify recorded authors when relevant. Distinguish code change, merge, deployment, and observed symptom dates by environment. State unknown dates or causes explicitly rather than inferring them. Do not describe behavior only as "old", "existing", or "recent" when its timing matters. Keep this context concise and understandable to non-developers, with technical evidence below.
+
 Verify intended behavior before claiming completion. Use independent review when risk justifies it. Repeat investigation, tests, or reviews only for changed state, failures, unresolved concerns, or required fresh evidence.
 
 Distinguish cached input, uncached input, and output tokens. Do not equate raw token totals with allowance charges or promise fixed savings.
