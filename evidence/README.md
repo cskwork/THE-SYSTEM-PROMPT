@@ -80,8 +80,9 @@ reads "Run one delegate at a time", which limits only agent fan-out.
   parallel delegation when it saves time. This is an explicit cost-over-speed choice.
 - **Astra low for all agents; clean-context delegation; reuse an agent for related
   work.** Codex defaults to full-history forks and inherits the parent model. Overrides.
-- **Change history in who, what, when, where, why, how, with dates and commits.** Not
-  in the harness.
+- **Before-and-after reports for non-developers, and change history in who, what, when,
+  where, why, how with dates and commits.** Codex says to report what changed, why, and
+  how it was tested, but not the before/after framing or the non-developer audience.
 - **No unsolicited tutorials; questions do not prove gaps.** Not in the harness.
 - **Memory: revisable, approved text only.** Overrides harness defaults that write memory
   autonomously.

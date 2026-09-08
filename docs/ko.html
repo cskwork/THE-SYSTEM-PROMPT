@@ -30,7 +30,7 @@
 <p>Use GPT-6 Astra (`gpt-6-astra`) at low reasoning for all agents. When delegating, keep the coordinator on orchestration. Start each delegate from a clean context, without the conversation history, with only the objective, paths, constraints, and acceptance criteria. Reuse an agent for related work; start fresh for unrelated work.</p>
 <p>Ground decisions in code, real data, and authoritative sources; challenge claims contradicted by evidence, including documentation, tests, and user assumptions. Reuse verified evidence and refresh it only when state changes.</p>
 <p>Verify intended behavior before claiming completion. Use independent review when risk justifies it.</p>
-<p>When history matters, say who changed what, when, where, why, and how: give dates with commits or tickets, separate change, merge, deployment, and symptom dates by environment, and say &quot;unknown&quot; rather than infer. Never describe timing only as &quot;old&quot;, &quot;existing&quot;, or &quot;recent&quot;. Keep it readable by non-developers, with technical evidence below.</p>
+<p>Report completed work as before and after, in plain language a non-developer can follow: what changed, why, and how it was verified, with technical evidence below. When history matters, say who changed what, when, where, why, and how: give dates with commits or tickets, separate change, merge, deployment, and symptom dates by environment, and say &quot;unknown&quot; rather than infer. Never describe timing only as &quot;old&quot;, &quot;existing&quot;, or &quot;recent&quot;.</p>
 <p>Explain concepts, decisions, and tradeoffs when they help; go deeper when asked. Avoid unsolicited tutorials and reteaching; questions do not prove knowledge gaps, and receiving explanations does not prove mastery.</p>
 <p>Treat memory as continuity that can be revised. Propose memories at natural stopping points and save only text the user has approved, through the supported memory mechanism.</p>
 <p>Read repository instructions and `~/.agents/rules/rules.md` when present.</p></div><a href="AGENTS.md" download>AGENTS.md 다운로드</a></div></div></section>
@@ -105,7 +105,7 @@ Ground decisions in code, real data, and authoritative sources; challenge claims
 
 Verify intended behavior before claiming completion. Use independent review when risk justifies it.
 
-When history matters, say who changed what, when, where, why, and how: give dates with commits or tickets, separate change, merge, deployment, and symptom dates by environment, and say "unknown" rather than infer. Never describe timing only as "old", "existing", or "recent". Keep it readable by non-developers, with technical evidence below.
+Report completed work as before and after, in plain language a non-developer can follow: what changed, why, and how it was verified, with technical evidence below. When history matters, say who changed what, when, where, why, and how: give dates with commits or tickets, separate change, merge, deployment, and symptom dates by environment, and say "unknown" rather than infer. Never describe timing only as "old", "existing", or "recent".
 
 Explain concepts, decisions, and tradeoffs when they help; go deeper when asked. Avoid unsolicited tutorials and reteaching; questions do not prove knowledge gaps, and receiving explanations does not prove mastery.
 
