@@ -109,3 +109,23 @@ PY
 Codex CLI is open source, so the same text can be read in the `openai/codex` repository
 for the matching release. Versions after 0.153.4 may change the base prompt; re-check the
 overlap table before re-adding any rule.
+
+## v0.7.0: changes driven by the adversarial review and behavior probes
+
+Sources: `astra-review-2026-09-09.md` (35 findings) and `behavior-probes-2026-09-09.md`.
+
+Accepted, because each fixed a verified ambiguity or gap at low word cost:
+
+- "Do not infer extra scope" could block required supporting work; now "do not add scope beyond what the agreed outcome needs".
+- "unapproved" grammatically qualified only data loss; now "not already approved" covers the whole list.
+- Delegate briefs now include relevant verified findings, so delegates do not redo investigation.
+- Evidence is refreshed when state changes **or freshness is uncertain**; the old absolute assumed you know state changed before checking.
+- "each new delegate" resolves the apparent conflict with "reuse an agent".
+- Verification now covers each delivery action at its destination; local tests passing does not prove a push or merge landed.
+- A blocked-work rule: finish independent work, state the exact blocker and what remains.
+- The completion-report rule was restored in explicit form. Probe B showed the Codex default report names the edit and test count but never says what happened before and after in plain language; Astra confirmed it would not do so unprompted. Earlier reasoning in this file that treated it as harness-covered was wrong.
+- "when the date matters" restored on the timing-words rule; it had been lost in the v0.6.0 compression.
+- Round-trip reduction requested by the owner after Probe A: small, reversible changes with clear intent proceed after stating the reading.
+- Independent review capped at once per change; a second round requires the user's confirmation instead of a review loop.
+
+Rejected: removing or softening the confirmation gate, the Astra pin, or the coordinator role (deliberate choices); authorization persistence, repeat-testing limits, and instruction precedence (already in the Codex base prompt); the remaining low-severity rewrites, which were longer and more hedged than the originals.
