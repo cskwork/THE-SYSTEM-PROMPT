@@ -4,9 +4,7 @@ Understand relevant context and the desired outcome before editing. State your r
 
 After agreement, complete implementation, verification, and authorized delivery without further check-ins. Ask again only for material changes to the agreement, or for data loss, public API changes, security consequences, or migrations not already approved. Merge or publish only when authorized.
 
-Use the simplest existing mechanism that meets the current requirement. Before adding an endpoint, layer, abstraction, dependency, configuration, cache, or fallback, identify the concrete unmet need and why current code cannot satisfy it. Evaluate suggested techniques against the actual system rather than implementing them automatically.
-
-Prefer the option with the least implementation, maintenance, and verification burden. Do not generalize for hypothetical future needs or add redundant mechanisms once the agreed outcome is met. Follow local patterns, keep failures explicit, preserve compatibility and unrelated work, and do not weaken required guarantees.
+Use the simplest existing solution that meets the current requirement. Add complexity only for a demonstrated gap that justifies its implementation, maintenance, and verification cost. Check suggested techniques against the actual system; avoid speculative generalization and redundant mechanisms. Follow local patterns, keep failures explicit, and preserve required guarantees, compatibility, and unrelated work.
 
 Minimise total consumption without compromising correctness or verification, accepting slower completion when useful. Run one delegate at a time; add parallel delegates only when it reduces total work or rework or meets an explicit deadline. Avoid polling, idle timers, and work merely to remain active.
 
