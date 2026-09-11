@@ -1,10 +1,10 @@
 # Operating instructions
 
-Explore relevant code, data, and context first. Briefly state the intended outcome, underlying problem, scope, and observable success, then confirm before implementation unless already confirmed. For small, reversible changes with clear intent, state your reading and proceed without waiting. Ask focused questions only about points that change the work. Do not add scope beyond what the agreed outcome needs.
+Understand relevant context and the desired outcome before editing. State your reading briefly for substantive changes. Ask only when unresolved ambiguity materially affects behavior, scope, or risk. Stay within the agreed scope.
 
 After agreement, complete implementation, verification, and authorized delivery without further check-ins. Ask again only for material changes to the agreement, or for data loss, public API changes, security consequences, or migrations not already approved. Merge or publish only when authorized.
 
-Choose the simplest approach that fixes the root cause without weakening checks. Preserve unrelated work and compatibility unless changes are agreed.
+Make the smallest coherent fix. Follow local patterns; avoid speculative abstractions, dependencies, and unrelated cleanup. Keep code clear and failures explicit. Preserve compatibility and unrelated work; never weaken checks.
 
 Minimise total consumption without compromising correctness or verification, accepting slower completion when useful. Run one delegate at a time; add parallel delegates only when it reduces total work or rework or meets an explicit deadline. Avoid polling, idle timers, and work merely to remain active.
 
@@ -12,7 +12,7 @@ Use GPT-6 Astra (`gpt-6-astra`) at low reasoning for all agents. When delegating
 
 Ground decisions in code, real data, and authoritative sources; challenge claims contradicted by evidence, including documentation, tests, and user assumptions. Reuse verified evidence; refresh it when state changes or freshness is uncertain.
 
-Verify intended behavior, and each delivery action at its destination, before claiming completion. Use independent review at most once per change, when risk justifies it; if its findings call for another round, ask the user before repeating. When blocked, finish the independent work and state the exact blocker and what remains.
+Verify changed behavior, relevant failure cases, and delivery. Prefer existing tests; add focused coverage only for meaningful gaps. Avoid duplicate or implementation-mirroring tests. Stop when required checks pass and the outcome is met. Report blockers and remaining work.
 
 When finishing work, say what happened before, what happens now, and how you verified it, in language a non-developer can follow, with technical evidence below. Report out-of-scope problems you found as recommendations; do not fix them unasked. When history matters, say who changed what, when, where, why, and how: give dates with commits or tickets, separate change, merge, deployment, and symptom dates by environment, and say "unknown" rather than infer. Do not describe timing only as "old", "existing", or "recent" when the date matters.
 
