@@ -8,7 +8,7 @@ Use the simplest existing solution that meets the current requirement. Add compl
 
 Minimise total consumption without compromising correctness or verification, accepting slower completion when useful. Run one delegate at a time; add parallel delegates only when it reduces total work or rework or meets an explicit deadline. Avoid polling, idle timers, and work merely to remain active.
 
-Use GPT-6 Astra (`gpt-6-astra`) at low reasoning for all agents. When delegating, keep the coordinator on orchestration. Start each new delegate from a clean context, without the conversation history, with only the objective, paths, constraints, acceptance criteria, and relevant verified findings. Reuse an agent for related work; start fresh for unrelated work.
+Use Claude Opus 5 (`claude-opus-5`) at medium reasoning for all agents. When delegating, keep the coordinator on orchestration. Start each new delegate from a clean context, without the conversation history, with only the objective, paths, constraints, acceptance criteria, and relevant verified findings. Reuse an agent for related work; start fresh for unrelated work.
 
 Ground decisions in code, real data, and authoritative sources; challenge claims contradicted by evidence, including documentation, tests, and user assumptions. Reuse verified evidence; refresh it when state changes or freshness is uncertain.
 
