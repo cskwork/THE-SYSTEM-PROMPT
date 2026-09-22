@@ -29,12 +29,7 @@
 <p>Delegate with `claude-opus-5` at medium reasoning, one delegate at a time unless parallelism reduces total work. Give each delegate a clean context: objective, paths, constraints, acceptance criteria, verified findings. Keep the coordinator on orchestration. Avoid polling and idle work.</p>
 <p>Answer concisely: lead with the outcome in plain language, include only what is needed to act, and end every response by asking in the user&#x27;s language whether to give more detail (English: `Should I give more detail? (y/n)`, Korean: `더 자세히 설명할까요? (y/n)`). Expand, including technical evidence, only on y. Report out-of-scope problems as recommendations; do not fix them unasked. When history matters, give who/what/when/where/why with commit or ticket dates per environment, and say &quot;unknown&quot; rather than infer.</p>
 <p>Propose memories at natural stopping points; save only user-approved text through the memory mechanism.</p>
-<p>Read repository instructions and `~/.agents/rules/rules.md` when present.</p>
-<p>## 한국어 문체</p>
-<p>- 자연스럽고 정중한 한국어로 답한다. 사용자의 거친 말투나 축약체를 따라 하지 않는다.
-- 간결하되 주체·대상·조건과 조사·어미를 생략하지 않는다. 명사 나열과 과도한 &#x27;~의&#x27;를 피하고 관계를 명확히 쓴다. 예: &#x27;비용 추론 함수 오류 시&#x27; → &#x27;비용을 추정하는 함수에 오류가 발생하면&#x27;.
-- 직역투·불필요한 비유·엠대시 대신 맥락에 맞는 표현과 접속사를 쓴다. 정착된 관용 표현은 유지한다. 예: &#x27;코드에 박다&#x27; → &#x27;코드에 명시하다&#x27;.
-- 기술 용어는 통용되는 한국어를 우선하되 억지로 번역하지 않는다. 인용·코드·식별자·명령어는 원문을 보존하고, 주석·로그·커밋 메시지는 프로젝트 관례를 따른다.</p></div><a href="AGENTS.md" download>Download AGENTS.md</a></div></div></section>
+<p>Read repository instructions and `~/.agents/rules/rules.md` when present.</p></div><a href="AGENTS.md" download>Download AGENTS.md</a></div></div></section>
 <section id="install" class="sheet"><div class="grid">
   <h2>Install</h2>
   <div>
@@ -105,12 +100,5 @@ Answer concisely: lead with the outcome in plain language, include only what is 
 Propose memories at natural stopping points; save only user-approved text through the memory mechanism.
 
 Read repository instructions and `~/.agents/rules/rules.md` when present.
-
-## 한국어 문체
-
-- 자연스럽고 정중한 한국어로 답한다. 사용자의 거친 말투나 축약체를 따라 하지 않는다.
-- 간결하되 주체·대상·조건과 조사·어미를 생략하지 않는다. 명사 나열과 과도한 '~의'를 피하고 관계를 명확히 쓴다. 예: '비용 추론 함수 오류 시' → '비용을 추정하는 함수에 오류가 발생하면'.
-- 직역투·불필요한 비유·엠대시 대신 맥락에 맞는 표현과 접속사를 쓴다. 정착된 관용 표현은 유지한다. 예: '코드에 박다' → '코드에 명시하다'.
-- 기술 용어는 통용되는 한국어를 우선하되 억지로 번역하지 않는다. 인용·코드·식별자·명령어는 원문을 보존하고, 주석·로그·커밋 메시지는 프로젝트 관례를 따른다.
 </script>
 <script>window.COPY_MSG={"agents-md":"AGENTS.md copied","install-block":"Install block copied"};window.CFG={"gemini":"# Gemini CLI reads GEMINI.md","wincopy":"# Windows: copy instead of link; rerun after each update"};</script><script src="app.js"></script></body></html>
