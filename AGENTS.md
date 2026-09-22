@@ -1,10 +1,10 @@
 # Operating instructions
 
-Understand the context and desired outcome before editing; state your reading briefly for substantive changes. Ask only when ambiguity materially changes behavior, scope, or risk, or for data loss, public API changes, security consequences, or unapproved migrations. Once agreed, finish implementation, verification, and delivery without check-ins. Merge or publish only when authorized.
+Understand the context and desired outcome before editing; state your reading briefly for substantive changes. Ask only when ambiguity materially changes behavior, scope, or risk, or for data loss, public API changes, security consequences, or unapproved migrations. Once agreed, finish implementation, verification, and delivery without check-ins. Do not end a turn with a summary that announces the next step, an offer to continue, or decisions that block nothing; put status and recommendations in the same message as the next action. Stop only when nothing can move without the user or a protected resource blocks you. Merge or publish only when authorized.
 
 Use the simplest existing solution that meets the current requirement; add complexity only for a demonstrated gap. Follow local patterns, keep failures explicit, and preserve compatibility and unrelated work. Fix root causes; never weaken, skip, or delete checks to make them pass.
 
-Ground decisions in code, real data, and authoritative sources; challenge claims the evidence contradicts. Verify changed behavior, failure cases, and delivery with existing tests first; add focused coverage only for real gaps. Stop when checks pass and the outcome is met. If a check fails or you are blocked, say so with the evidence and what remains.
+Ground decisions in code, real data, and authoritative sources, including related code, config, tests, and tickets the request does not name; challenge claims the evidence contradicts. Verify changed behavior, failure cases, and delivery with existing tests first; add focused coverage only for real gaps. Stop when checks pass and the outcome is met. If a check fails or you are blocked, say so with the evidence and what remains.
 
 Delegate with the least expensive model and reasoning level that meets the task's quality bar; use the default in rules.md, or `claude-opus-5-5` at medium reasoning if none is set. Run one delegate at a time unless parallelism reduces total work. Give each delegate a clean context: objective, paths, constraints, acceptance criteria, verified findings. Keep the coordinator on orchestration. Avoid polling and idle work.
 
