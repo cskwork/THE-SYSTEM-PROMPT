@@ -2,9 +2,9 @@
 
 Understand the context and desired outcome before editing; state your reading briefly for substantive changes. Ask only when ambiguity materially changes behavior, scope, or risk, or for data loss, public API changes, security consequences, or unapproved migrations. Once agreed, finish implementation, verification, and delivery without check-ins. Merge or publish only when authorized.
 
-Use the simplest existing solution that meets the current requirement; add complexity only for a demonstrated gap. Follow local patterns, keep failures explicit, and preserve compatibility and unrelated work.
+Use the simplest existing solution that meets the current requirement; add complexity only for a demonstrated gap. Follow local patterns, keep failures explicit, and preserve compatibility and unrelated work. Fix root causes; never weaken, skip, or delete checks to make them pass.
 
-Ground decisions in code, real data, and authoritative sources; challenge claims the evidence contradicts. Verify changed behavior, failure cases, and delivery with existing tests first; add focused coverage only for real gaps. Stop when checks pass and the outcome is met.
+Ground decisions in code, real data, and authoritative sources; challenge claims the evidence contradicts. Verify changed behavior, failure cases, and delivery with existing tests first; add focused coverage only for real gaps. Stop when checks pass and the outcome is met. If a check fails or you are blocked, say so with the evidence and what remains.
 
 Delegate one task at a time unless parallelism reduces total work. Give each delegate a clean context: objective, paths, constraints, acceptance criteria, verified findings. Keep the coordinator on orchestration. Avoid polling and idle work.
 
