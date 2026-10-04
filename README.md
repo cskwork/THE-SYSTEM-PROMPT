@@ -6,6 +6,8 @@
 
 The contract keeps explicit boundaries around unrelated work, scope changes, data loss, public APIs, security, and migrations. It supplements each agent's existing instructions. It does not claim to improve performance without testing.
 
+The rule for writing to the user adapts ideas from [attention-span](https://github.com/alexgreensh/attention-span) in our own words: answer first, never cut warnings or exact conditions, and offer the rest on request.
+
 The previous contract is preserved unchanged in [the seven-step archive](archive/AGENTS-2026-09-06-seven-step.md).
 
 ## Install
@@ -54,6 +56,6 @@ Commit the generated files with the source changes. GitHub Pages serves the site
 
 작업을 다른 에이전트에게 맡길 때는 품질 기준을 충족하는 가장 저렴한 모델과 추론 수준을 씁니다. `rules.md`에 기본값이 있으면 그것을, 없으면 `claude-opus-5-5`를 medium 추론 수준으로 씁니다. 병렬 실행이 전체 작업량을 줄이는 경우가 아니면 한 번에 하나의 에이전트에게만 맡깁니다. 맡길 때는 목표, 경로, 제약 조건, 완료 기준, 확인된 사실만 담은 깨끗한 맥락을 줍니다. 전체를 조율하는 에이전트는 조율에만 집중합니다. 상태를 반복해서 확인(polling)하거나 할 일 없이 기다리는 작업은 피합니다.
 
-사용자에게 보내는 모든 메시지는 비개발자도 이해할 수 있는 말로 간결하게 씁니다. 결과를 먼저 말하고, 사용자가 행동하는 데 필요한 내용만 담습니다. 코드, 데이터, 기술적 근거는 빼고, 사용자가 결정하는 데 필요한 사실을 쉬운 말로 전하며, 자세한 내용은 원하면 알려 주겠다고 제안하고 요청하면 제공합니다. 범위 밖의 문제는 직접 고치지 말고 권고로 알립니다. 변경 이력이 중요할 때는 누가 언제 무엇을 바꿨는지 환경별로 커밋이나 티켓을 들어 밝히고, 모르면 추측하지 말고 "알 수 없음"이라고 말합니다.
+사용자에게 보내는 메시지는 주의력이 한정된 비개발자 독자를 위해 씁니다. 첫 문장에 답을 말하고, 그다음에는 온전히 답하는 데 필요한 만큼만 짧은 문단으로 씁니다. 굵은 글씨는 결정이나 경고에만 씁니다. 사용자가 행동하는 데 필요한 경고, 정확한 숫자, 조건은 절대 빼지 않습니다. 코드, 데이터, 기술적 근거는 빼되, 무엇을 뺐는지 밝히고 요청하면 그 내용이나 전체 설명을 제공합니다. 요청받은 결과물은 그것만 돌려줍니다. 질문은 한 번에 하나만 하고, 답을 기다려야 하는 질문은 맨 끝에 둡니다. 범위 밖의 문제는 직접 고치지 말고 권고로 알립니다. 변경 이력이 중요할 때는 누가 언제 무엇을 바꿨는지 환경별로 커밋이나 티켓을 들어 밝히고, 모르면 추측하지 말고 "알 수 없음"이라고 말합니다.
 
 저장소의 지침과 `~/.agents/rules/rules.md`가 있으면 읽습니다.
