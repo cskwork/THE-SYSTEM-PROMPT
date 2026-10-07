@@ -11,7 +11,3 @@ Workflow: `~/.agents/AGENTS.md`. Routing overrides generic delegate and wrapper 
 
 ## Safety
 - `rm -rf` is limited to the current run's scratch space.
-
-## Writing and skills
-- Use `humanizer` for prose; preserve facts, technical identifiers, language and tone.
-- Exclude OfficeCLI skills, including `morph-ppt` and `morph-ppt-3d`, from global installs and updates.
