@@ -12,12 +12,14 @@ The previous contract is preserved unchanged in [the seven-step archive](archive
 
 ## Install
 
-Back up existing files before running these commands, including `~/.agents/AGENTS.md`. The commands overwrite the canonical file and replace the listed links. Keep only the agents you use.
+Back up existing files before running these commands, including `~/.agents/AGENTS.md` and `~/.agents/rules/rules.md`. The commands overwrite the canonical file and replace the listed links. Keep only the agents you use.
 
 ```bash
-mkdir -p ~/.agents ~/.claude ~/.codex ~/.gemini ~/.config/opencode ~/.pi/agent
+mkdir -p ~/.agents/rules ~/.claude ~/.codex ~/.gemini ~/.config/opencode ~/.pi/agent
 curl -fsSL https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/AGENTS.md \
   -o ~/.agents/AGENTS.md
+curl -fsSL https://raw.githubusercontent.com/cskwork/THE-SYSTEM-PROMPT/main/rules/rules.md \
+  -o ~/.agents/rules/rules.md
 
 ln -sfn ~/.agents/AGENTS.md ~/.claude/CLAUDE.md
 ln -sfn ~/.agents/AGENTS.md ~/.codex/AGENTS.md
