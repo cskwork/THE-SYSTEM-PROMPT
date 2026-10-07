@@ -1,13 +1,13 @@
 # Domain rules
 
-Workflow: `~/.agents/AGENTS.md`. Routing overrides generic delegate and wrapper defaults.
+Workflow: `~/.agents/AGENTS.md`. Routing overrides delegate/wrapper defaults.
 
 ## Models
-- Default, backend logic, simple work, browser automation and QA/E2E: `gpt-6.1-sol`, high reasoning, Fast (priority service tier).
-- UI/UX, visual design, frontend, document writing, difficult implementation/debugging and architecture: `claude-opus-5-5`, medium reasoning. Includes small frontend/document tasks.
-- Opus: use `call-agent` with `--model claude-opus-5-5 --effort medium`; preserve preflights and permissions. Replace high-only wrappers with equivalent medium calls.
-- Host coordinates; execute natively when its model, reasoning and speed match. QA of Opus-built interfaces uses Sol.
-- If `claude-opus-5-5` is unavailable, report it and default to `gpt-6.1-sol`, high reasoning, Fast (priority service tier), without additional approval. Other model substitutions require owner approval.
+- Default/backend/simple work/browser/QA: `gpt-6.1-sol`, high, Fast (priority).
+- UI/UX/visual design/frontend/documents/hard implementation/debugging/architecture: `claude-opus-5-5`, medium, even for small tasks.
+- Opus: `call-agent --model claude-opus-5-5 --effort medium`; override high-only wrappers, preserve preflights/permissions.
+- Coordinate; execute natively when model/effort/speed match. Sol verifies Opus interfaces.
+- Opus unavailable: report and use the default automatically. Ask before other substitutions.
 
 ## Safety
 - `rm -rf` is limited to the current run's scratch space.
