@@ -9,8 +9,7 @@ Workflow: `~/.agents/AGENTS.md`. Routing overrides generic delegate and wrapper 
 - Host coordinates; execute natively when its model, reasoning and speed match. QA of Opus-built interfaces uses Sol.
 - Unavailable model: report the blocker; obtain owner approval before substitution.
 
-## Environment and safety
-- macOS arm64; Node via nvm (v22.22.3), Python `/opt/homebrew/bin/python3.12`, Git `/usr/bin/git`.
+## Safety
 - `rm -rf` is limited to the current run's scratch space.
 
 ## Writing and skills
