@@ -12,9 +12,9 @@ Task-specific model routing below takes precedence over general delegation defau
 ## Networking
 
 ## Agents
-- Default model: `gpt-6.1-sol` at medium reasoning with Fast mode (priority service tier), except the Opus categories below.
-- Routine backend and application logic, and very simple tasks outside UI/UX/frontend: use `gpt-6.1-sol` at medium reasoning with Fast mode (priority service tier).
-- Browser automation, browser QA, and end-to-end browser verification: use `gpt-6.1-sol` at medium reasoning with Fast mode (priority service tier), including verification of Opus-built interfaces.
+- Default model: `gpt-6.1-sol` at high reasoning with Fast mode (priority service tier), except the Opus categories below.
+- Routine backend and application logic, and very simple tasks outside UI/UX/frontend: use `gpt-6.1-sol` at high reasoning with Fast mode (priority service tier).
+- Browser automation, browser QA, and end-to-end browser verification: use `gpt-6.1-sol` at high reasoning with Fast mode (priority service tier), including verification of Opus-built interfaces.
 - UI, UX, visual design, frontend implementation, and document writing: use `claude-opus-5-5` at medium reasoning via the `call-agent` skill, including small frontend and document-writing tasks.
 - Difficult implementation, complex debugging, architecture, or tasks that exceed the routine Sol path: use `claude-opus-5-5` at medium reasoning via `call-agent`.
 - For Claude calls, pass `--model claude-opus-5-5 --effort medium` explicitly. Do not use a wrapper that hardcodes `--effort high` for a medium-reasoning task; preserve the call-agent preflights and permission boundaries when making the equivalent direct call.
