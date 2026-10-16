@@ -11,3 +11,6 @@ Routing overrides generic delegate/wrapper defaults.
 
 ## Safety
 - `rm -rf` is limited to the current run's scratch space.
+
+## Skills
+- Default skills: `attention-kind` for user replies, `grill-with-docs` (`grilling` + `domain-modeling`) when sharpening a plan or design, `domain-modeling` when defining or updating domain terms (`GLOSSARY.md`) and ADRs (`docs/adr/`), and `research` when investigating questions against primary sources in a background agent.
